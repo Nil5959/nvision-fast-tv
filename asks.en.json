@@ -1,0 +1,185 @@
+{
+  "wifi": {
+    "title": "Computer and TV on the same network",
+    "lead": "Claude talks to the TV over your home network, and AirPlay from an iPhone only works on the same network.",
+    "steps": [
+      "This computer is on the same Wi-Fi as the TV (or the TV is wired to the same router).",
+      "If your home has two routers with two different networks (e.g. 192.168.1.x and 192.168.2.x), AirPlay will not work across them.",
+      "The TV / box is switched on."
+    ],
+    "button": "Yes, same network"
+  },
+  "adb": {
+    "title": "Turn on ADB on the TV (once, with the remote)",
+    "lead": "This is the only step you do by hand. Everything after it is automatic.",
+    "steps": [
+      "On the remote: Settings ⚙️ → System (or \"Device Preferences\") → About.",
+      "Scroll to \"Android TV OS build\" (or \"Build\") and press OK 7 times, until it says you are a developer.",
+      "Go back once → \"Developer options\".",
+      "Turn on \"USB debugging\". If there is also \"Network debugging\", turn it on too.",
+      "Leave the TV on this screen."
+    ],
+    "button": "Done"
+  },
+  "allow": {
+    "title": "Allow it on the TV",
+    "lead": "The TV will now show \"Allow USB debugging?\".",
+    "steps": [
+      "Tick \"Always allow from this computer\".",
+      "Press OK / Allow.",
+      "No prompt? Turn USB debugging off and on again."
+    ],
+    "button": "Allowed"
+  },
+  "tv": {
+    "title": "Which TV?",
+    "lead": "These are the devices I found on your network. Pick the one to set up now.",
+    "fields": [
+      {
+        "key": "ip",
+        "type": "radio",
+        "label": "Device",
+        "options": []
+      },
+      {
+        "key": "manual",
+        "type": "text",
+        "label": "Or type an IP address",
+        "placeholder": "192.168.1.50"
+      }
+    ],
+    "button": "Continue"
+  },
+  "choices": {
+    "title": "How should this TV look?",
+    "lead": "You can keep the defaults and press Continue.",
+    "fields": [
+      {
+        "key": "room",
+        "type": "text",
+        "label": "Room name (what the iPhone shows under AirPlay)",
+        "placeholder": "Living room"
+      },
+      {
+        "key": "apps",
+        "type": "checklist",
+        "label": "Apps on the home screen, in order",
+        "options": [
+          {
+            "value": "il.co.partnertv.atv",
+            "label": "Partner TV+",
+            "checked": true
+          },
+          {
+            "value": "com.netflix.ninja",
+            "label": "Netflix",
+            "checked": true
+          },
+          {
+            "value": "com.google.android.youtube.tv",
+            "label": "YouTube",
+            "checked": true
+          },
+          {
+            "value": "com.spotify.tv.android",
+            "label": "Spotify",
+            "checked": true
+          },
+          {
+            "value": "com.android.vending",
+            "label": "Play Store",
+            "checked": true
+          },
+          {
+            "value": "com.disney.disneyplus",
+            "label": "Disney+"
+          },
+          {
+            "value": "com.amazon.amazonvideo.livingroom",
+            "label": "Prime Video"
+          },
+          {
+            "value": "com.apple.atve.androidtv.appletv",
+            "label": "Apple TV"
+          },
+          {
+            "value": "com.wbd.stream",
+            "label": "Max"
+          }
+        ]
+      },
+      {
+        "key": "voice",
+        "type": "radio",
+        "label": "Voice search (the mic button on the remote)",
+        "options": [
+          {
+            "value": "off",
+            "label": "Not used, turn it off (saves memory)",
+            "checked": true
+          },
+          {
+            "value": "on",
+            "label": "Used, keep it"
+          }
+        ]
+      },
+      {
+        "key": "password",
+        "type": "text",
+        "label": "AirPlay password (optional)",
+        "placeholder": "No password"
+      }
+    ],
+    "button": "Continue"
+  },
+  "uninstall": {
+    "title": "Which apps should go?",
+    "lead": "These apps were installed on the TV and are not on the home screen. Ticked ones are removed; they can be reinstalled from the Play Store.",
+    "fields": [
+      {
+        "key": "remove",
+        "type": "checklist",
+        "label": "Remove",
+        "options": []
+      }
+    ],
+    "button": "Remove ticked apps",
+    "skip": "Keep everything"
+  },
+  "cec": {
+    "title": "One remote for TV and box (optional)",
+    "lead": "So the TV remote controls the box, and the box turns the TV on straight to it:",
+    "steps": [
+      "Samsung: Settings → General & Privacy → Start Screen Options → turn off \"Start with Smart Hub Home\".",
+      "Samsung: Settings → Connection → External Device Manager → turn on Anynet+ (HDMI-CEC).",
+      "LG: SimpLink. Sony: Bravia Sync. Philips: EasyLink. Turn it on.",
+      "On the box it is already on; nothing to do there."
+    ],
+    "button": "Done",
+    "skip": "Skip"
+  },
+  "finish": {
+    "title": "Finish: leave ADB open?",
+    "lead": "Open ADB lets you change things later without the remote. Closed is safer on a network with guests.",
+    "fields": [
+      {
+        "key": "adb",
+        "type": "radio",
+        "label": "ADB",
+        "options": [
+          {
+            "value": "open",
+            "label": "Leave it open",
+            "checked": true
+          },
+          {
+            "value": "close",
+            "label": "Close it (you can turn it on again in Settings)"
+          }
+        ]
+      }
+    ],
+    "button": "Finish"
+  }
+}

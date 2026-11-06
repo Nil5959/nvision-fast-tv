@@ -3,82 +3,214 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>פסט טיווי ניל</title>
+<title>N Vision Fast TV</title>
+<link rel="icon" href="logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#0b0b0d; --card:#151518; --line:#26262b; --text:#f2f2f4; --dim:#8e8e96; --ok:#30d158; --run:#0a84ff; --fail:#ff453a; --skip:#636366; }
-  @media (prefers-color-scheme: light) { :root { --bg:#f5f5f7; --card:#fff; --line:#e3e3e8; --text:#1d1d1f; --dim:#6e6e73; } }
+  :root { --ink:#0B1620; --panel:#0E1A24; --panel2:#132331; --line:#1E3242; --text:#E8EEF3; --muted:#94A3B8;
+          --green:#10B981; --cyan:#06B6D4; --blue:#2563EB; --red:#F87171; --grad:linear-gradient(90deg,#10B981,#06B6D4,#2563EB); }
   * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.5 -apple-system, "SF Pro Text", "Segoe UI", system-ui, sans-serif; }
-  main { max-width:1100px; margin:0 auto; padding:24px 16px 48px; display:grid; gap:20px; grid-template-columns:minmax(0,1fr); }
-  @media (min-width:860px) { main { grid-template-columns:minmax(0,5fr) minmax(0,6fr); } header { grid-column:1/-1; } }
-  header h1 { margin:0; font-size:28px; font-weight:700; letter-spacing:-.01em; }
-  header p { margin:4px 0 0; color:var(--dim); }
-  .bar { height:6px; background:var(--line); border-radius:3px; overflow:hidden; margin-top:14px; }
-  .bar i { display:block; height:100%; width:0; background:var(--ok); transition:width .4s; }
-  ol { list-style:none; margin:0; padding:0; background:var(--card); border:1px solid var(--line); border-radius:14px; }
-  li { display:flex; gap:12px; align-items:flex-start; padding:12px 16px; border-top:1px solid var(--line); }
-  li:first-child { border-top:0; }
-  .dot { flex:none; width:22px; height:22px; border-radius:50%; border:2px solid var(--skip); margin-top:1px; display:grid; place-items:center; font-size:13px; color:#fff; }
-  li.ok .dot { background:var(--ok); border-color:var(--ok); }
-  li.fail .dot { background:var(--fail); border-color:var(--fail); }
-  li.run .dot { border-color:var(--run); border-top-color:transparent; animation:spin 1s linear infinite; }
-  li.skip { opacity:.5; }
+  body { margin:0; background:var(--ink); color:var(--text); font:17px/1.55 Assistant, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width:1120px; margin:0 auto; padding:24px 16px 56px; display:grid; gap:20px; grid-template-columns:minmax(0,1fr); }
+  @media (min-width:900px) { main { grid-template-columns:minmax(0,7fr) minmax(0,5fr); } header, .progress { grid-column:1/-1; } }
+  header { display:flex; align-items:center; gap:14px; }
+  header img { width:52px; height:52px; }
+  .brand { line-height:1.1; }
+  .word { font-size:22px; letter-spacing:.02em; direction:ltr; unicode-bidi:isolate; }
+  .word b { font-weight:800; } .word span { font-weight:300; letter-spacing:.32em; margin-inline-start:.35em; }
+  .tag { color:var(--muted); font-size:14px; margin-top:4px; }
+  .tvinfo { margin-inline-start:auto; text-align:end; color:var(--muted); font-size:14px; }
+  .tvinfo b { color:var(--text); font-size:17px; font-weight:600; display:block; }
+  .progress { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:18px 20px; }
+  .ptop { display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
+  .pct { font-size:40px; font-weight:800; font-variant-numeric:tabular-nums; }
+  .now { color:var(--muted); }
+  .now b { color:var(--text); font-weight:600; }
+  .bar { height:10px; background:var(--line); border-radius:99px; overflow:hidden; margin-top:10px; }
+  .bar i { display:block; height:100%; width:0; background:var(--grad); border-radius:99px; transition:width .6s ease; }
+  .col { display:grid; gap:20px; align-content:start; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:20px; }
+  .ask { position:relative; border:0; background:linear-gradient(var(--panel2),var(--panel2)) padding-box, var(--grad) border-box; border:2px solid transparent; }
+  .ask .kicker { color:var(--green); font-weight:700; font-size:14px; letter-spacing:.04em; }
+  .ask h2 { margin:4px 0 6px; font-size:26px; font-weight:700; line-height:1.25; }
+  .ask .lead { color:var(--muted); margin:0 0 14px; }
+  .ask ol { margin:0 0 16px; padding-inline-start:0; list-style:none; counter-reset:s; display:grid; gap:10px; }
+  .ask ol li { counter-increment:s; display:flex; gap:12px; align-items:flex-start; font-size:18px; }
+  .ask ol li::before { content:counter(s); flex:none; width:28px; height:28px; border-radius:50%; background:var(--ink); border:1px solid var(--line); display:grid; place-items:center; font-weight:700; font-size:15px; color:var(--cyan); }
+  fieldset { border:0; padding:0; margin:0 0 16px; }
+  legend, label.t { font-weight:600; margin-bottom:8px; display:block; }
+  input[type=text] { width:100%; font:inherit; color:var(--text); background:var(--ink); border:1px solid var(--line); border-radius:12px; padding:12px 14px; }
+  input[type=text]:focus { outline:2px solid var(--cyan); outline-offset:1px; }
+  .opts { display:grid; gap:8px; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); }
+  .opt { display:flex; gap:10px; align-items:center; background:var(--ink); border:1px solid var(--line); border-radius:12px; padding:10px 12px; cursor:pointer; min-height:48px; }
+  .opt:has(input:checked) { border-color:var(--green); background:#0f2a26; }
+  .opt input { width:20px; height:20px; accent-color:var(--green); flex:none; }
+  .opt span { unicode-bidi:plaintext; }
+  .opt small { display:block; color:var(--muted); font-size:13px; direction:ltr; text-align:start; }
+  .btns { display:flex; gap:10px; flex-wrap:wrap; }
+  button { font:inherit; font-weight:700; border:0; border-radius:14px; padding:14px 26px; cursor:pointer; min-height:52px; }
+  button.go { background:var(--grad); color:#fff; font-size:19px; }
+  button.no { background:transparent; color:var(--muted); border:1px solid var(--line); }
+  button:focus-visible { outline:3px solid var(--cyan); outline-offset:2px; }
+  button[disabled] { opacity:.6; cursor:default; }
+  .wait { display:flex; gap:12px; align-items:center; color:var(--muted); }
+  .spin { width:20px; height:20px; border-radius:50%; border:3px solid var(--line); border-top-color:var(--cyan); animation:spin 1s linear infinite; flex:none; }
+  ul.steps { list-style:none; margin:0; padding:0; }
+  ul.steps li { display:flex; gap:12px; align-items:flex-start; padding:11px 0; border-top:1px solid var(--line); }
+  ul.steps li:first-child { border-top:0; padding-top:0; }
+  .dot { flex:none; width:26px; height:26px; border-radius:50%; border:2px solid var(--line); display:grid; place-items:center; font-size:13px; font-weight:800; color:var(--muted); }
+  li.ok .dot { background:var(--green); border-color:var(--green); color:#04130e; }
+  li.fail .dot { background:var(--red); border-color:var(--red); color:#1b0606; }
+  li.run .dot { border-color:var(--cyan); border-top-color:transparent; animation:spin 1s linear infinite; }
+  li.skip { opacity:.55; }
+  li.pending .name { color:var(--muted); }
+  .name { font-weight:600; }
+  .note { color:var(--muted); font-size:14px; overflow-wrap:anywhere; }
+  li.fail .note { color:var(--red); }
   @keyframes spin { to { transform:rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce) { li.run .dot { animation:none; border-top-color:var(--run); } }
-  .t { font-weight:600; }
-  .n { color:var(--dim); font-size:14px; overflow-wrap:anywhere; }
-  li.fail .n { color:var(--fail); }
-  figure { margin:0; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; align-self:start; }
-  figure img { width:100%; border-radius:8px; display:block; background:#000; aspect-ratio:16/9; object-fit:contain; }
-  figcaption { color:var(--dim); font-size:14px; margin-top:8px; }
-  .empty { aspect-ratio:16/9; display:grid; place-items:center; color:var(--dim); background:var(--bg); border-radius:8px; }
+  @media (prefers-reduced-motion: reduce) { .spin, li.run .dot { animation:none; } .bar i { transition:none; } }
+  figure { margin:0; }
+  figure img, .empty { width:100%; aspect-ratio:16/9; border-radius:12px; background:#000; object-fit:contain; display:block; }
+  .empty { display:grid; place-items:center; color:var(--muted); background:var(--ink); border:1px dashed var(--line); }
+  figcaption { color:var(--muted); font-size:14px; margin-top:8px; }
+  h3 { margin:0 0 12px; font-size:15px; color:var(--muted); font-weight:600; letter-spacing:.03em; }
+  .done-banner { text-align:center; }
+  .done-banner h2 { margin:6px 0; font-size:28px; }
 </style>
 </head>
 <body>
 <main>
   <header>
-    <h1 id="title">פסט טיווי ניל</h1>
-    <p id="sub">מחכה להתחלה…</p>
-    <div class="bar"><i id="bar"></i></div>
+    <img src="logo-mark.svg" alt="">
+    <div class="brand">
+      <div class="word"><b>N</b><span>VISION</span></div>
+      <div class="tag" id="tag">Fast TV</div>
+    </div>
+    <div class="tvinfo" id="tvinfo"></div>
   </header>
-  <ol id="steps"></ol>
-  <figure>
-    <div id="shot" class="empty">צילום מסך יופיע כאן</div>
-    <figcaption id="cap">מה רואים עכשיו בטלוויזיה</figcaption>
-  </figure>
+
+  <section class="progress" aria-live="polite">
+    <div class="ptop"><div class="now" id="now"></div><div class="pct" id="pct">0%</div></div>
+    <div class="bar"><i id="bar"></i></div>
+  </section>
+
+  <div class="col">
+    <section class="card ask" id="ask" hidden></section>
+    <section class="card" id="waiting"><div class="wait"><span class="spin"></span><span id="waittext"></span></div></section>
+    <section class="card"><h3 id="stepsTitle"></h3><ul class="steps" id="steps"></ul></section>
+  </div>
+  <div class="col">
+    <section class="card">
+      <h3 id="tvTitle"></h3>
+      <figure><div class="empty" id="shot"></div><figcaption id="cap"></figcaption></figure>
+    </section>
+  </div>
 </main>
 <script>
-const icons = { ok: "✓", fail: "!", run: "", pending: "", skip: "–" };
-let lastShot = null;
-function ago(t) { const s = Math.round(Date.now() / 1000 - t); return s < 60 ? `לפני ${s} שניות` : `לפני ${Math.round(s / 60)} דקות`; }
-async function tick() {
-  try {
-    const r = await fetch("status.json?" + Date.now(), { cache: "no-store" });
-    if (!r.ok) return;
-    const s = await r.json();
-    document.getElementById("title").textContent = `פסט טיווי ניל · ${s.room}`;
-    const done = s.steps.filter(x => x.state === "ok" || x.state === "skip").length;
-    const fail = s.steps.find(x => x.state === "fail");
-    const run = s.steps.find(x => x.state === "run");
-    document.getElementById("sub").textContent =
-      `${s.ip} · ${done} מתוך ${s.steps.length} · ` + (fail ? `נעצר: ${fail.title}` : run ? `עכשיו: ${run.title}` : done === s.steps.length ? "הכל מוכן" : "ממתין") + ` · עודכן ${ago(s.updated)}`;
-    document.getElementById("bar").style.width = (100 * done / s.steps.length) + "%";
-    const ol = document.getElementById("steps");
-    ol.replaceChildren(...s.steps.map(x => {
-      const li = document.createElement("li"); li.className = x.state;
-      li.innerHTML = `<span class="dot"></span><div><div class="t"></div><div class="n"></div></div>`;
-      li.querySelector(".dot").textContent = icons[x.state] || "";
-      li.querySelector(".t").textContent = x.title;
-      li.querySelector(".n").textContent = x.note || "";
-      return li;
-    }));
-    if (s.shot && s.shot !== lastShot) {
-      lastShot = s.shot;
-      const img = new Image(); img.alt = "צילום מסך מהטלוויזיה"; img.src = s.shot;
-      document.getElementById("shot").replaceWith(Object.assign(img, { id: "shot" }));
-      document.getElementById("cap").textContent = "צילום מסך אחרון מהטלוויזיה";
+const T = {
+  he: { tag:"התקנה מהירה לטלוויזיה", steps:"השלבים", tv:"מה רואים בטלוויזיה", noshot:"צילום מסך יופיע כאן", lastshot:"צילום מסך אחרון מהטלוויזיה",
+        waiting:"Claude עובד. אם צריך משהו ממך, זה יופיע כאן.", start:"מתחילים…", now:"עכשיו:", stopped:"נעצר:", all:"הכל מוכן 🎉",
+        need:"צריך אותך", sent:"נשלח, ממשיכים…", done:"הטלוויזיה מוכנה", doneSub:"אפשר לסגור את הדף." , choose:"לבחור לפחות אחד, או לכתוב כתובת" },
+  en: { tag:"Fast TV setup", steps:"Steps", tv:"What the TV shows", noshot:"A screenshot will appear here", lastshot:"Latest screenshot from the TV",
+        waiting:"Claude is working. If it needs you, it will show up here.", start:"Starting…", now:"Now:", stopped:"Stopped:", all:"All done 🎉",
+        need:"Your turn", sent:"Sent, continuing…", done:"The TV is ready", doneSub:"You can close this page.", choose:"Pick one, or type an address" }
+};
+const $ = id => document.getElementById(id);
+let L = T.he, lastShot = null, shownAsk = null;
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+
+function renderAsk(a) {
+  const box = $("ask");
+  if (!a) { box.hidden = true; shownAsk = null; return; }
+  if (shownAsk === a.id) return;   // keep what the user is typing
+  shownAsk = a.id; box.hidden = false; box.replaceChildren();
+  box.append(el("div", "kicker", L.need), el("h2", null, a.title || ""));
+  if (a.lead) box.append(el("p", "lead", a.lead));
+  if (a.steps && a.steps.length) { const ol = el("ol"); a.steps.forEach(s => ol.append(el("li", null, s))); box.append(ol); }
+  const form = el("form"); form.noValidate = true;
+  (a.fields || []).forEach(f => {
+    const fs = el("fieldset"); fs.dataset.key = f.key; fs.dataset.type = f.type;
+    if (f.type === "text") {
+      const lab = el("label", "t", f.label); const inp = el("input"); inp.type = "text"; inp.placeholder = f.placeholder || ""; inp.value = f.value || ""; inp.name = f.key;
+      lab.htmlFor = inp.id = "f_" + f.key; fs.append(lab, inp);
+    } else {
+      fs.append(el("legend", null, f.label)); const opts = el("div", "opts");
+      (f.options || []).forEach(o => {
+        const lab = el("label", "opt"); const inp = el("input"); inp.type = f.type === "radio" ? "radio" : "checkbox"; inp.name = f.key; inp.value = o.value; inp.checked = !!o.checked;
+        const txt = el("span", null, o.label); if (o.sub) txt.append(el("small", null, o.sub));
+        lab.append(inp, txt); opts.append(lab);
+      });
+      fs.append(opts);
     }
-  } catch (e) {}
+    form.append(fs);
+  });
+  const btns = el("div", "btns"); const go = el("button", "go", a.button || "OK"); go.type = "submit"; btns.append(go);
+  if (a.skip) { const no = el("button", "no", a.skip); no.type = "button"; no.onclick = () => send(a.id, "skip", btns); btns.append(no); }
+  form.append(btns);
+  form.onsubmit = e => {
+    e.preventDefault();
+    if (!(a.fields || []).length) return send(a.id, "done", btns);
+    const v = {};
+    form.querySelectorAll("fieldset").forEach(fs => {
+      const k = fs.dataset.key, t = fs.dataset.type;
+      if (t === "text") v[k] = fs.querySelector("input").value.trim();
+      else if (t === "radio") { const c = fs.querySelector("input:checked"); v[k] = c ? c.value : null; }
+      else v[k] = [...fs.querySelectorAll("input:checked")].map(i => i.value);
+    });
+    if (a.id === "tv" && !v.ip && !v.manual) { alert(L.choose); return; }
+    send(a.id, v, btns);
+  };
+  box.append(form);
+  const first = form.querySelector("input, button"); if (first) first.focus({ preventScroll: true });
+  box.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+async function send(id, value, btns) {
+  btns.querySelectorAll("button").forEach(b => b.disabled = true);
+  try {
+    const r = await fetch("answer", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, value }) });
+    if (r.ok || r.status === 409) { $("ask").hidden = true; $("waittext").textContent = L.sent; }
+    else btns.querySelectorAll("button").forEach(b => b.disabled = false);
+  } catch (e) { btns.querySelectorAll("button").forEach(b => b.disabled = false); }
+}
+
+async function tick() {
+  let s;
+  try { const r = await fetch("status.json?" + Date.now(), { cache: "no-store" }); if (!r.ok) return; s = await r.json(); } catch (e) { return; }
+  L = T[s.lang] || T.he;
+  document.documentElement.lang = s.lang || "he"; document.documentElement.dir = s.lang === "en" ? "ltr" : "rtl";
+  $("tag").textContent = L.tag; $("stepsTitle").textContent = L.steps; $("tvTitle").textContent = L.tv;
+  const tv = s.tv || {}; $("tvinfo").replaceChildren();
+  if (tv.room || tv.ip) { $("tvinfo").append(el("b", null, tv.room || tv.ip), el("span", null, [tv.model, tv.room ? tv.ip : ""].filter(Boolean).join(" · "))); }
+  const steps = s.steps || [], n = steps.length || 1;
+  const done = steps.filter(x => x.state === "ok" || x.state === "skip").length;
+  const pct = Math.round(100 * (done + 0.5 * steps.filter(x => x.state === "run").length) / n);
+  $("pct").textContent = pct + "%"; $("bar").style.width = pct + "%";
+  const fail = steps.find(x => x.state === "fail"), run = steps.find(x => x.state === "run");
+  const now = $("now"); now.replaceChildren();
+  if (fail) now.append(L.stopped + " ", el("b", null, fail.title));
+  else if (run) now.append(L.now + " ", el("b", null, run.title + (run.note ? " · " + run.note : "")));
+  else now.append(done === steps.length && steps.length ? L.all : L.start);
+  $("steps").replaceChildren(...steps.map((x, i) => {
+    const li = el("li", x.state); const dot = el("span", "dot", x.state === "ok" ? "✓" : x.state === "fail" ? "!" : x.state === "run" ? "" : String(i + 1));
+    const box = el("div"); box.append(el("div", "name", x.title)); if (x.note) box.append(el("div", "note", x.note));
+    li.append(dot, box); return li;
+  }));
+  renderAsk(s.ask);
+  const allDone = done === steps.length && steps.length;
+  $("waiting").hidden = !!s.ask;
+  if (!s.ask) {
+    $("waiting").replaceChildren();
+    if (allDone) { const d = el("div", "done-banner"); d.append(el("h2", null, L.done), el("div", "note", L.doneSub)); $("waiting").append(d); }
+    else { const w = el("div", "wait"); w.append(el("span", "spin"), el("span", null, L.waiting)); $("waiting").append(w); }
+  }
+  if (s.shot && s.shot !== lastShot) {
+    lastShot = s.shot; const img = new Image(); img.alt = L.lastshot; img.src = s.shot; img.id = "shot";
+    $("shot").replaceWith(img);
+  }
+  $("cap").textContent = lastShot ? L.lastshot : L.noshot;
+  if (!lastShot) $("shot").textContent = L.noshot;
 }
 tick(); setInterval(tick, 1500);
 </script>

@@ -1,0 +1,185 @@
+{
+  "wifi": {
+    "title": "המחשב והטלוויזיה על אותה רשת",
+    "lead": "כדי ש-Claude יוכל לדבר עם הטלוויזיה, ו-AirPlay יעבוד מהאייפון, כולם צריכים להיות על אותה רשת בבית.",
+    "steps": [
+      "המחשב הזה מחובר לאותו Wi-Fi כמו הטלוויזיה (או שהטלוויזיה בכבל לאותו ראוטר).",
+      "אם יש בבית שני ראוטרים עם שתי רשתות שונות (למשל 192.168.1.x ו-192.168.2.x), AirPlay לא יעבוד ביניהן.",
+      "הטלוויזיה והממיר דולקים."
+    ],
+    "button": "כן, אותה רשת"
+  },
+  "adb": {
+    "title": "להדליק ADB בטלוויזיה (פעם אחת, עם השלט)",
+    "lead": "זה הצעד היחיד שצריך לעשות בידיים. אחרי זה הכל קורה לבד.",
+    "steps": [
+      "בשלט: הגדרות ⚙️ → מערכת (או \"העדפות מכשיר\") → מידע (About).",
+      "לרדת עד \"Android TV OS build\" (או \"Build\") וללחוץ OK 7 פעמים, עד שכתוב \"את/ה מפתח/ת\".",
+      "לחזור אחורה פעם אחת → \"אפשרויות למפתחים\" (Developer options).",
+      "להדליק \"ניפוי באגים ב-USB\" (USB debugging). אם יש גם \"ניפוי באגים ברשת\" (Network debugging), להדליק גם אותו.",
+      "להשאיר את הטלוויזיה דלוקה על המסך הזה."
+    ],
+    "button": "עשיתי"
+  },
+  "allow": {
+    "title": "לאשר בטלוויזיה",
+    "lead": "עכשיו תופיע בטלוויזיה הודעה \"Allow USB debugging?\" (לאשר ניפוי באגים).",
+    "steps": [
+      "לסמן ✓ \"Always allow from this computer\" (לאפשר תמיד מהמחשב הזה).",
+      "ללחוץ OK / Allow.",
+      "אם ההודעה לא מופיעה: לכבות ולהדליק שוב את USB debugging."
+    ],
+    "button": "אישרתי"
+  },
+  "tv": {
+    "title": "איזו טלוויזיה?",
+    "lead": "מצאתי את המכשירים האלה ברשת. לבחור את זה שמתקינים עכשיו.",
+    "fields": [
+      {
+        "key": "ip",
+        "type": "radio",
+        "label": "מכשיר",
+        "options": []
+      },
+      {
+        "key": "manual",
+        "type": "text",
+        "label": "או לכתוב כתובת IP",
+        "placeholder": "192.168.1.50"
+      }
+    ],
+    "button": "המשך"
+  },
+  "choices": {
+    "title": "איך הטלוויזיה הזו תיראה?",
+    "lead": "אפשר להשאיר את ברירות המחדל וללחוץ המשך.",
+    "fields": [
+      {
+        "key": "room",
+        "type": "text",
+        "label": "שם החדר (השם שהאייפון יראה ב-AirPlay)",
+        "placeholder": "ממיר סלון"
+      },
+      {
+        "key": "apps",
+        "type": "checklist",
+        "label": "אפליקציות במסך הבית, לפי הסדר",
+        "options": [
+          {
+            "value": "il.co.partnertv.atv",
+            "label": "Partner TV+",
+            "checked": true
+          },
+          {
+            "value": "com.netflix.ninja",
+            "label": "Netflix",
+            "checked": true
+          },
+          {
+            "value": "com.google.android.youtube.tv",
+            "label": "YouTube",
+            "checked": true
+          },
+          {
+            "value": "com.spotify.tv.android",
+            "label": "Spotify",
+            "checked": true
+          },
+          {
+            "value": "com.android.vending",
+            "label": "Play Store",
+            "checked": true
+          },
+          {
+            "value": "com.disney.disneyplus",
+            "label": "Disney+"
+          },
+          {
+            "value": "com.amazon.amazonvideo.livingroom",
+            "label": "Prime Video"
+          },
+          {
+            "value": "com.apple.atve.androidtv.appletv",
+            "label": "Apple TV"
+          },
+          {
+            "value": "com.wbd.stream",
+            "label": "Max"
+          }
+        ]
+      },
+      {
+        "key": "voice",
+        "type": "radio",
+        "label": "חיפוש קולי (כפתור המיקרופון בשלט)",
+        "options": [
+          {
+            "value": "off",
+            "label": "לא משתמשים, לכבות (חוסך זיכרון)",
+            "checked": true
+          },
+          {
+            "value": "on",
+            "label": "משתמשים, להשאיר"
+          }
+        ]
+      },
+      {
+        "key": "password",
+        "type": "text",
+        "label": "סיסמה ל-AirPlay (לא חובה)",
+        "placeholder": "בלי סיסמה"
+      }
+    ],
+    "button": "המשך"
+  },
+  "uninstall": {
+    "title": "אילו אפליקציות להסיר?",
+    "lead": "אלה אפליקציות שהותקנו בטלוויזיה ולא נמצאות במסך הבית. מה שמסומן יוסר. אפשר להתקין שוב מ-Play Store.",
+    "fields": [
+      {
+        "key": "remove",
+        "type": "checklist",
+        "label": "להסיר",
+        "options": []
+      }
+    ],
+    "button": "הסר את המסומנות",
+    "skip": "לא להסיר כלום"
+  },
+  "cec": {
+    "title": "שלט אחד לטלוויזיה ולממיר (לא חובה)",
+    "lead": "כדי שהשלט של הטלוויזיה ישלוט בממיר, והממיר ידליק את הטלוויזיה ישר אליו:",
+    "steps": [
+      "סמסונג: הגדרות → כללי ופרטיות → אפשרויות מסך פתיחה → לכבות \"התחל עם מסך הבית של Smart Hub\".",
+      "סמסונג: הגדרות → חיבור → ניהול התקנים חיצוניים → להדליק Anynet+ (HDMI-CEC).",
+      "LG: SimpLink. סוני: Bravia Sync. פיליפס: EasyLink. להדליק.",
+      "בממיר זה כבר מופעל, אין מה לעשות שם."
+    ],
+    "button": "עשיתי",
+    "skip": "דלג"
+  },
+  "finish": {
+    "title": "סיום: להשאיר ADB פתוח?",
+    "lead": "ADB פתוח מאפשר לחזור ולשנות דברים בלי לגעת בשלט. סגור זה בטוח יותר ברשת עם אורחים.",
+    "fields": [
+      {
+        "key": "adb",
+        "type": "radio",
+        "label": "ADB",
+        "options": [
+          {
+            "value": "open",
+            "label": "להשאיר פתוח",
+            "checked": true
+          },
+          {
+            "value": "close",
+            "label": "לסגור (אפשר להדליק שוב בהגדרות)"
+          }
+        ]
+      }
+    ],
+    "button": "סיים"
+  }
+}

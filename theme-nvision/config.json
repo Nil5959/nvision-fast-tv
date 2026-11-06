@@ -9,7 +9,7 @@
   "columns": 5,
   "single_row": true,
   "dock_row": true,
-  "background_color": "#000000",
+  "background_color": "#0B1620",
   "wallpaper": true,
   "cinematic_home": true,
   "dock_glass": true,
@@ -17,8 +17,8 @@
   "icon_only_buttons": true,
   "show_network_pill": false,
   "show_inputs_pill": false,
-  "app_glow": true,
-  "glow_style": "horizon",
+  "app_glow": false,
+  "glow_style": "off",
   "focus_overshoot": false,
   "advanced_effects": false,
   "hidden_apps": [
@@ -26,9 +26,13 @@
     "com.technicolor.android.remotecontrolservice",
     "com.marvell.tv.overscan",
     "com.sharkfood.partner.tv.diagnostics",
-    "com.ionitech.airscreen",
     "me.efesser.flauncher",
     "ca.dstudio.atvlauncher.free"
   ],
-  "live_tv_package": ""
+  "ambient_glow": false,
+  "top_bar_apps": [
+    "io.github.jqssun.airplay"
+  ],
+  "cinematic_scrim": 35,
+  "wallpaper_dim": 0
 }

@@ -1,24 +1,56 @@
-# fast-tv-nil
+<p align="center"><img src="logo-mark.svg" width="96" alt="N Vision"></p>
+<h1 align="center">N VISION · Fast TV</h1>
 
-Say **"פסט טיווי ניל"** (or "fast tv nil") to Claude Code and it cleans up an Android TV box at home,
-step by step, with a live progress page:
+<p align="center">Set up an Android TV / Google TV / Partner TV+ box in minutes: faster, cleaner, an N Vision home
+screen with only your apps, and free AirPlay from your iPhone. Your AI assistant does the work; you follow one page.</p>
 
-- backup + `restore.sh` before anything changes
-- faster animations, Google TV recommendations off (voice search too, if unused)
-- unused apps removed (after listing them)
-- an Apple-TV-style home screen ([cleanyourtv](https://github.com/Gathin23/cleanyourtv) launcher + `theme-tvos/`)
-- a free, self-built AirPlay receiver ([Nil5959/android-airplay-server](https://github.com/Nil5959/android-airplay-server)) named after the room
-- reboot check, then network ADB closed
+![The N Vision home screen on a Partner TV+ box](docs/home-screenshot.png)
 
-| File | What |
+## How to use it
+
+Open [Claude Code](https://claude.com/claude-code) (or another AI coding assistant with a terminal) on a computer
+on the **same Wi-Fi as the TV**, and tell it:
+
+> Go to https://github.com/Nil5959/nvision-fast-tv and do what PROMPT.md says.
+
+בעברית:
+
+> תיכנס ל-https://github.com/Nil5959/nvision-fast-tv ותעשה מה שכתוב ב-PROMPT-he.md
+
+A progress page opens in your browser. It shows exactly what to press on the TV remote (turning on Developer options
+and USB debugging, pressing Allow), lets you pick your apps, room name and an optional AirPlay password, and shows
+each step with a screenshot from the TV. You never have to type in the chat.
+
+## What it does
+
+1. Backs up the TV's state first and writes a `restore.sh` that undoes everything.
+2. Speeds up animations, turns off Google TV recommendations (and voice search if you don't use it).
+3. Removes apps you don't use (you tick them on the page; reinstall any time from the Play Store).
+4. Installs the [cleanyourtv](https://github.com/Gathin23/cleanyourtv) home screen with the N Vision theme and your apps.
+5. Installs [N Vision AirPlay](https://github.com/Nil5959/nvision-airplay): named after the room, starts with the TV,
+   goes back to what you were watching when the iPhone disconnects, optional password, green/red status button.
+6. Checks HDMI-CEC (one remote for TV and box), reboots, and verifies it all.
+7. Leaves ADB open by default so you can change things later; closing it is one tick on the last card.
+
+Not for Samsung Tizen, LG webOS, Roku or Fire TV.
+
+## Files
+
+| | |
 | --- | --- |
-| `SKILL.md` | the Claude Code skill (install: `git clone https://github.com/Nil5959/fast-tv-nil ~/.claude/skills/fast-tv-nil`) |
-| `PROMPT.md` / `PROMPT-he.md` | the full recipe, to paste into any coding assistant |
-| `fasttv.sh` | one command per step: `./fasttv.sh <ip> "<room>" auto` |
-| `progress.py` + `progress.html` | the progress page (`python3 progress.py serve`, then http://127.0.0.1:8765/) |
-| `theme-tvos/` | the Apple-TV-style theme (wallpaper from cleanyourtv's `themes/glass`, MIT) |
+| `PROMPT.md` / `PROMPT-he.md` | the instructions your assistant follows |
+| `SKILL.md` | the same as a Claude Code skill: `git clone https://github.com/Nil5959/nvision-fast-tv ~/.claude/skills/nvision-fast-tv` |
+| `fasttv.sh` | one command per step: `./fasttv.sh <ip> "<room>" <step>` |
+| `progress.py`, `progress.html`, `asks.*.json` | the progress page and its cards |
+| `find_tvs.py` | finds the TVs on your network |
+| `theme-nvision/` | the N Vision home-screen theme |
+| `docs/partner-tv-plus.md` | notes from a real Partner TV+ box |
 
-Undo on a TV: `work/backups/<ip>/restore.sh` (USB debugging must be on again).
+Undo on a TV: `work/backups/<ip>/restore.sh`.
 
-Credits: [cleanyourtv](https://github.com/Gathin23/cleanyourtv) by Gathin (MIT): launcher, tools and the safety rules
-this prompt is based on. AirPlay: [jqssun/android-airplay-server](https://github.com/jqssun/android-airplay-server) (GPL-3.0) and [UxPlay](https://github.com/FDH2/UxPlay).
+## Credits and licenses
+
+- Home screen, ADB tools and the safety rules: [cleanyourtv](https://github.com/Gathin23/cleanyourtv) by Gathin, MIT.
+- AirPlay: [jqssun/android-airplay-server](https://github.com/jqssun/android-airplay-server), GPL-3.0, based on
+  [UxPlay](https://github.com/FDH2/UxPlay); the N Vision fork is [Nil5959/nvision-airplay](https://github.com/Nil5959/nvision-airplay), GPL-3.0.
+- This kit: MIT (see `LICENSE`). N Vision name and logo © N Vision.
