@@ -8,14 +8,19 @@ screen with only your apps, and free AirPlay from your iPhone. Your AI assistant
 
 ## How to use it
 
-Open [Claude Code](https://claude.com/claude-code) (or another AI coding assistant with a terminal) on a computer
-on the **same Wi-Fi as the TV**, and tell it:
+On a computer on the **same Wi-Fi as the TV**, open [Claude Code](https://claude.com/claude-code) and paste:
 
-> Go to https://github.com/Nil5959/nvision-fast-tv and do what PROMPT.md says.
+```
+Set up my Android TV with N Vision Fast TV: clone https://github.com/Nil5959/nvision-fast-tv and follow its PROMPT.md exactly.
+```
 
 בעברית:
 
-> תיכנס ל-https://github.com/Nil5959/nvision-fast-tv ותעשה מה שכתוב ב-PROMPT-he.md
+```
+תתקין לי את N Vision Fast TV על הטלוויזיה: תוריד את https://github.com/Nil5959/nvision-fast-tv ותעשה בדיוק מה שכתוב ב-PROMPT-he.md
+```
+
+Nothing to install first: the assistant downloads this kit, and the home screen and AirPlay come ready-made from the releases.
 
 A progress page opens in your browser. It shows exactly what to press on the TV remote (turning on Developer options
 and USB debugging, pressing Allow), lets you pick your apps, room name and an optional AirPlay password, and shows

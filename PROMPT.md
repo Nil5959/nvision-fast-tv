@@ -23,7 +23,7 @@ python3 -I progress.py serve 8765     # in the background; leave it running
 ```
 Open http://127.0.0.1:8765/ for them: the built-in browser pane if you have one, else `open` (macOS) /
 `xdg-open` (Linux). Tell them in one sentence that everything continues on that page.
-The launcher build needs JDK 17 and the Android SDK (`launcher/build-and-install.sh` finds them; it says what is missing).
+Needs only `git`, `python3` and `curl`: the home screen and AirPlay come ready-made from the GitHub releases, nothing is built.
 
 ## How the page works
 - `python3 -I progress.py set <step> run|ok|fail|skip "<short note>"` before and after every step.

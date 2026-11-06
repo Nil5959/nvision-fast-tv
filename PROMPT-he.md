@@ -25,7 +25,7 @@ python3 -I progress.py serve 8765     # ברקע, להשאיר רץ
 ```
 לפתוח לו את http://127.0.0.1:8765/: בדפדפן המובנה אם יש לך, אחרת `open` (מק) או `xdg-open` (לינוקס).
 להגיד לו במשפט אחד שמכאן הכל ממשיך בדף הזה.
-בניית מסך הבית צריכה JDK 17 ו-Android SDK (‏`launcher/build-and-install.sh` מוצא אותם, ואומר מה חסר).
+צריך רק `git`, ‏`python3` ו-`curl`: מסך הבית ו-AirPlay יורדים מוכנים מגיטהאב, לא בונים כלום.
 
 ## איך הדף עובד
 - `python3 -I progress.py set <step> run|ok|fail|skip "<הערה קצרה>"` לפני ואחרי כל שלב.

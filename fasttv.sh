@@ -4,7 +4,7 @@
 #   fasttv.sh <tv ip> "<airplay room name>" <step> [args]
 #
 # Steps, in the usual order (each one can be run again on its own):
-#   setup      clone cleanyourtv into work/, make its venv, download the AirPlay APK (no TV needed)
+#   setup      clone cleanyourtv into work/ (for its tools), make its venv, download the home-screen and AirPlay APKs
 #   connect    reach the TV over ADB and print model / Android / ABI
 #   backup     save packages, getprop, settings to work/backups/<ip>/ and write restore.sh there
 #   anim       animations: window 0, transition 0, animator 0.5
@@ -29,6 +29,8 @@ PY="$CYT/tools/venv/bin/python"
 PROG="python3 -I $KIT/progress.py"
 AIRPLAY_APK="$WORK/nvision-airplay.apk"
 AIRPLAY_URL="https://github.com/Nil5959/nvision-airplay/releases/latest/download/nvision-airplay.apk"
+HOME_APK="$CYT/launcher/app/build/outputs/apk/release/app-release.apk"   # ready-made, from this kit's release
+HOME_URL="https://github.com/Nil5959/nvision-fast-tv/releases/latest/download/nvision-home.apk"
 DEFAULT_DOCK="il.co.partnertv.atv com.netflix.ninja com.google.android.youtube.tv com.spotify.tv.android com.android.vending"
 DOCK="${DOCK:-$DEFAULT_DOCK}"
 VOICE="${VOICE:-off}"
@@ -63,6 +65,8 @@ do_setup() {
   if [ ! -d "$CYT/.git" ]; then git clone -q https://github.com/Gathin23/cleanyourtv "$CYT"; else git -C "$CYT" pull -q --ff-only || true; fi
   if [ ! -x "$PY" ]; then python3 -m venv "$CYT/tools/venv" && "$CYT/tools/venv/bin/pip" install -q -r "$CYT/tools/requirements.txt"; fi
   curl -fsSL -o "$AIRPLAY_APK.part" "$AIRPLAY_URL" && mv "$AIRPLAY_APK.part" "$AIRPLAY_APK"
+  mkdir -p "$(dirname "$HOME_APK")"
+  curl -fsSL -o "$HOME_APK.part" "$HOME_URL" && mv "$HOME_APK.part" "$HOME_APK"
   echo "setup ok: $CYT, $AIRPLAY_APK"
 }
 
@@ -161,8 +165,8 @@ do_uninstall() {
 
 do_launcher() {
   step launcher run "מתקין מסך בית"
-  local apk="$CYT/launcher/app/build/outputs/apk/release/app-release.apk"
-  if [ -f "$apk" ]; then (cd "$CYT/launcher" && SKIP_BUILD=1 ./build-and-install.sh); else (cd "$CYT/launcher" && ./build-and-install.sh); fi
+  [ -f "$HOME_APK" ] || do_setup
+  (cd "$CYT/launcher" && SKIP_BUILD=1 ./build-and-install.sh)   # ready-made APK: no JDK or Android SDK needed
   local th="$WORK/theme-$IP"; rm -rf "$th"; mkdir -p "$th"
   cp "$KIT/theme-nvision/wallpaper.jpg" "$th/"
   DOCK="$DOCK" python3 -I - "$KIT/theme-nvision/config.json" "$th/config.json" <<'EOF'
