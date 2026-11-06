@@ -12,7 +12,7 @@ For Nil specifically:
 - Talk in simple Hebrew; the page runs with `progress.py init he`.
 - Nil hates chat back-and-forth and repeated confirmations: everything goes through the page's cards
   (`progress.py ask` + `wait`). Never ask in the chat what a card can ask.
-- Home TVs: balcony `192.168.1.128` "ממיר מרפסת" (done), `192.168.1.164` "ממיר סלון", `192.168.1.154` "ממיר חדר".
+- Home TVs (IPs change with DHCP: identify a box by `settings get global device_name` and its AirPlay `server_name`, never by IP alone): balcony "ממיר מרפסת" (done), living room device_name "סלון" / "ממיר סלון" (done; was .154, now .128, MAC 60:3d:26:db:39:af), the other box device_name "TV – סלון" (cast) at last check .164.
   Same apps as the balcony, voice off, Partner TV+ opens at power-on. At the end, when Nil confirms on the finish card, `clean` deletes backups/leftovers and closes ADB.
 - The AirPlay release APK is signed with the N Vision key in `~/.config/nvision/` (never commit it).
   The balcony box still has a debug-signed build: `fasttv.sh airplay` uninstalls and reinstalls it when the signature differs.
