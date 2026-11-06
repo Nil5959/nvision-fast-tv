@@ -13,7 +13,7 @@ For Nil specifically:
 - Nil hates chat back-and-forth and repeated confirmations: everything goes through the page's cards
   (`progress.py ask` + `wait`). Never ask in the chat what a card can ask.
 - Home TVs: balcony `192.168.1.128` "ממיר מרפסת" (done), `192.168.1.164` "ממיר סלון", `192.168.1.154` "ממיר חדר".
-  Same apps as the balcony, voice off. ADB stays open unless Nil picks "close" on the last card.
+  Same apps as the balcony, voice off, Partner TV+ opens at power-on. At the end, when Nil confirms on the finish card, `clean` deletes backups/leftovers and closes ADB.
 - The AirPlay release APK is signed with the N Vision key in `~/.config/nvision/` (never commit it).
   The balcony box still has a debug-signed build: `fasttv.sh airplay` uninstalls and reinstalls it when the signature differs.
 - Native Gradle builds fail in a path with spaces; build in a folder without spaces.

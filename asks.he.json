@@ -109,6 +109,30 @@
         ]
       },
       {
+        "key": "start_app",
+        "type": "radio",
+        "label": "איזו אפליקציה תיפתח כשמדליקים את הטלוויזיה (וגם כשהממיר מתעורר)",
+        "options": [
+          {
+            "value": "il.co.partnertv.atv",
+            "label": "Partner TV+",
+            "checked": true
+          },
+          {
+            "value": "com.netflix.ninja",
+            "label": "Netflix"
+          },
+          {
+            "value": "com.google.android.youtube.tv",
+            "label": "YouTube"
+          },
+          {
+            "value": "home",
+            "label": "מסך הבית"
+          }
+        ]
+      },
+      {
         "key": "voice",
         "type": "radio",
         "label": "חיפוש קולי (כפתור המיקרופון בשלט)",
@@ -123,12 +147,6 @@
             "label": "משתמשים, להשאיר"
           }
         ]
-      },
-      {
-        "key": "password",
-        "type": "text",
-        "label": "סיסמה ל-AirPlay (לא חובה)",
-        "placeholder": "בלי סיסמה"
       }
     ],
     "button": "המשך"
@@ -160,8 +178,8 @@
     "skip": "דלג"
   },
   "finish": {
-    "title": "סיום: להשאיר ADB פתוח?",
-    "lead": "ADB פתוח מאפשר לחזור ולשנות דברים בלי לגעת בשלט. סגור זה בטוח יותר ברשת עם אורחים.",
+    "title": "הכל עובד טוב?",
+    "lead": "בודקים רגע בטלוויזיה: מסך הבית, האפליקציות ו-AirPlay מהאייפון. אם הכל טוב, מנקים הכל: מוחקים את הגיבויים והקבצים הזמניים (מהטלוויזיה ומהמחשב) וסוגרים את ADB.",
     "fields": [
       {
         "key": "adb",
@@ -169,13 +187,13 @@
         "label": "ADB",
         "options": [
           {
-            "value": "open",
-            "label": "להשאיר פתוח",
+            "value": "clean",
+            "label": "הכל עובד, לנקות ולסגור (בלי גיבוי, אי אפשר יהיה להחזיר אחורה)",
             "checked": true
           },
           {
-            "value": "close",
-            "label": "לסגור (אפשר להדליק שוב בהגדרות)"
+            "value": "open",
+            "label": "להשאיר הכל פתוח עם הגיבוי (כדי לשנות עוד משהו)"
           }
         ]
       }

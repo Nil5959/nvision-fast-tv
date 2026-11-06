@@ -51,16 +51,29 @@ If nothing was found, ask `tv` with no options: they type the IP (TV: Settings �
   everything here uses cleanyourtv `tools/tv.py` (`TV_HOST=<ip>`).
 - If it isn't Android (no ADB at all, Tizen, webOS, Roku OS, Fire OS): set `connect fail` with that note, tell them, stop.
 
+## 3b. Already set up before? — `status` (always, right after connecting)
+`./fasttv.sh <ip> "" status` reads the TV itself (any earlier run, from any computer, leaves its backup and a
+`done.txt` in `/sdcard/nvision-fast-tv/` on the TV) and prints JSON: `done` per step, the current `room`, `dock`,
+`voice_off`, `apps_left`, `airplay_version`. For every step that is already `true`: `set <step> ok "כבר נעשה"` /
+"already done" and skip it. Re-run only what is `false` (e.g. AirPlay when a newer version is out).
+If everything is done, tell them in one line and only offer the update steps. Be quick: no repeated questions.
+
 ## 4. Choices — card `choices`
-Before asking, you may add apps that are installed on the TV to the `apps` options
+If `status` found earlier choices, pre-tick them (`apps` = its `dock`, `room` = its `room`, voice per `voice_off`)
+by passing the options with `"checked"` set and a `"value"` on the text field; if all of them are already set and
+nothing else is missing, skip this card. Before asking, you may add apps that are installed on the TV to the `apps` options
 (`pm list packages -3`, plus Netflix / YouTube / Play Store if present), keeping the defaults ticked.
-The answer: `room` (AirPlay name; empty → the TV's own name), `apps` (dock, in order), `voice` (`on`/`off`),
-`password` (empty = none). `set choices ok "<room> · N apps"`.
+The answer: `room` (AirPlay name; empty → the TV's own name), `apps` (dock, in order), `start_app` (the app that
+opens at power-on and on wake, or `home`), `voice` (`on`/`off`). There is no AirPlay password: the iPhone gets a
+4-digit code that pops up on the TV the first time it connects (like Apple TV).
+Partner TV+ boxes already open Partner TV+ after a boot by themselves (`launch-after-boot` in the firmware's
+`TchCustomizer`); `START_APP` adds the same on wake and on other TVs. `set choices ok "<room> · N apps"`.
 
 ## 5. The work (each line is one command; on failure read the note, fix, re-run only that step)
 ```
-export DOCK="<apps, space separated>" VOICE=<on|off> PASSWORD="<password or empty>"
+export DOCK="<apps, space separated>" VOICE=<on|off> START_APP=<package or home>
 ./fasttv.sh <ip> "<room>" backup      # packages, settings, getprop → work/backups/<ip>/ + restore.sh
+./fasttv.sh <ip> "<room>" time        # clock: automatic time from time.google.com, checked against this computer
 ./fasttv.sh <ip> "<room>" anim        # window 0, transition 0, animator 0.5
 ./fasttv.sh <ip> "<room>" disable     # Google TV / leanback recommendations; katniss (voice) only if VOICE=off
 ./fasttv.sh <ip> "<room>" apps        # lists user-installed apps not on the dock → uninstall-options.json
@@ -69,7 +82,7 @@ Card `uninstall`: `progress.py ask uninstall "{\"options\":{\"remove\":$(cat wor
 wait. Answer `"skip"` → `set uninstall skip`; else `./fasttv.sh <ip> "<room>" uninstall <the ticked packages>`.
 ```
 ./fasttv.sh <ip> "<room>" launcher   # cleanyourtv home + N Vision theme with DOCK; stock launcher off only after Home is confirmed
-./fasttv.sh <ip> "<room>" airplay    # N Vision AirPlay, opened once (so it starts at boot), room name, password
+./fasttv.sh <ip> "<room>" airplay    # N Vision AirPlay (installs or updates), opened once, room name, on-screen code + overlay permission
 ./fasttv.sh <ip> "<room>" cec        # prints hdmi_control_*; fails if HDMI-CEC is off
 ```
 Then card `cec` (the TV-side menus, Samsung Start Screen Options etc.): ask, wait (`skip` is fine).
@@ -78,8 +91,9 @@ Then card `cec` (the TV-side menus, Samsung Start Screen Options etc.): ask, wai
 ```
 
 ## 6. Finish — card `finish`
-Default is to **leave ADB open**. Only if they chose `close`: `./fasttv.sh <ip> "<room>" close`
-(ADB off, then `tools/adb-closed.py` must report the port refuses). Otherwise `set close ok "ADB נשאר פתוח"` / "ADB left open".
+It asks whether everything works. `clean` (the default): `./fasttv.sh <ip> "<room>" clean` deletes the backups and
+leftovers on the TV and on this computer, then turns ADB off; `tools/adb-closed.py` must report the port refuses.
+`open`: leave everything as is, `set close ok "ADB נשאר פתוח"` / "ADB left open".
 Then a short summary in the chat: model, what was disabled / removed, dock, AirPlay name, where the backup and
 `restore.sh` are. More TVs: start again from step 2, one TV at a time.
 
@@ -100,4 +114,7 @@ Then a short summary in the chat: model, what was disabled / removed, dock, AirP
   (`dumpsys power | grep mWakefulness`). Check `dumpsys activity activities | grep -i ResumedActivity`.
 - Shell can't disable single activities (`pm disable pkg/Activity`); hide tiles with the theme's `hidden_apps`.
 - AirPlay only works when the iPhone and the TV are on the same subnet (one router, or the second router as an access point).
+- A wrong clock (a box stuck on an old date) breaks HTTPS: Play Store, Google sign-in and streaming apps fail. Always run
+  `time`. If it fails and the box can't even ping its router (`Destination Host Unreachable`), a reboot or re-plugging
+  the network cable fixes it; seen on a Partner box whose `eth0` and bridge `ebr0` both held the same IP.
 - More device notes: `docs/partner-tv-plus.md`.

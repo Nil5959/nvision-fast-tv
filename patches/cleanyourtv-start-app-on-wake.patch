@@ -1,0 +1,12 @@
+diff --git a/launcher/app/src/main/java/com/gathin/tvhome/MainActivity.java b/launcher/app/src/main/java/com/gathin/tvhome/MainActivity.java
+index 76251f1f..f7553a16 100644
+--- a/launcher/app/src/main/java/com/gathin/tvhome/MainActivity.java
++++ b/launcher/app/src/main/java/com/gathin/tvhome/MainActivity.java
+@@ -3240,6 +3240,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
+      *  openLiveTvAfterBoot to catch. */
+     private void openStartAppOnWake() {
+         String app = getSharedPreferences(Config.SETTINGS_NAME, MODE_PRIVATE).getString(OpenOnStart.KEY, "");
++        if (app.isEmpty() && bootToLiveTv) app = liveTvPkg;   // N Vision: the boot app (from the theme) also opens on wake
+         if (app.isEmpty() || app.equals(getPackageName())) return;
+         Intent i = OpenOnStart.intent(getPackageManager(), app);
+         if (i != null) openWhenReady(i);

@@ -53,16 +53,28 @@ python3 -I progress.py serve 8765     # ברקע, להשאיר רץ
   כאן הכל עובד עם `tools/tv.py` של cleanyourtv (`TV_HOST=<ip>`).
 - אם זה לא אנדרואיד (אין ADB בכלל, או Tizen, ‏webOS, ‏Roku OS, ‏Fire OS): `set connect fail` עם הסבר, להגיד לו, ולעצור.
 
+## 3ב. הוגדר כבר בעבר? `status` (תמיד, מיד אחרי החיבור)
+`./fasttv.sh <ip> "" status` קורא מהטלוויזיה עצמה (כל הרצה קודמת, מכל מחשב, משאירה את הגיבוי ואת `done.txt`
+בתיקייה `/sdcard/nvision-fast-tv/` בטלוויזיה) ומדפיס JSON: ‏`done` לכל שלב, ה-`room` וה-`dock` הנוכחיים,
+`voice_off`, ‏`apps_left`, ‏`airplay_version`. לכל שלב שכבר `true`: ‏`set <step> ok "כבר נעשה"` ומדלגים עליו.
+מריצים רק מה שעדיין `false` (למשל AirPlay כשיש גרסה חדשה).
+אם הכל כבר נעשה, להגיד במשפט אחד ולהציע רק את העדכונים. להיות מהיר: בלי לשאול שוב מה שכבר ידוע.
+
 ## 4. בחירות: כרטיס `choices`
-לפני השאלה אפשר להוסיף לאפשרויות של `apps` אפליקציות שמותקנות בטלוויזיה
+אם `status` מצא בחירות קודמות, לסמן אותן מראש (`apps` = ה-`dock` שלו, `room` = ה-`room` שלו, קול לפי `voice_off`)
+עם `"checked"` באפשרויות ו-`"value"` בשדה הטקסט; אם הכל כבר ידוע ולא חסר כלום, לדלג על הכרטיס. לפני השאלה אפשר להוסיף לאפשרויות של `apps` אפליקציות שמותקנות בטלוויזיה
 (`pm list packages -3`, ובנוסף Netflix / YouTube / Play Store אם הן קיימות), ולהשאיר את ברירות המחדל מסומנות.
-התשובה: `room` (השם ב-AirPlay; ריק → השם של הטלוויזיה עצמה), `apps` (המסך, לפי הסדר), `voice` (‏`on`/`off`),
-`password` (ריק = בלי). `set choices ok "<room> · N אפליקציות"`.
+התשובה: `room` (השם ב-AirPlay; ריק → השם של הטלוויזיה עצמה), `apps` (המסך, לפי הסדר), `start_app` (האפליקציה
+שנפתחת בהדלקה ובהתעוררות, או `home`), `voice` (‏`on`/`off`). אין סיסמה ל-AirPlay: באייפון מקלידים קוד בן 4 ספרות
+שקופץ על הטלוויזיה בחיבור הראשון (כמו ב-Apple TV).
+ממירי Partner TV+ כבר פותחים את Partner TV+ אחרי הדלקה מלאה בעצמם (`launch-after-boot` בקושחה, ב-`TchCustomizer`);
+`START_APP` מוסיף את זה גם בהתעוררות ובטלוויזיות אחרות. `set choices ok "<room> · N אפליקציות"`.
 
 ## 5. העבודה (כל שורה היא פקודה אחת; אם נכשל, לקרוא את ההערה, לתקן, ולהריץ שוב רק את השלב הזה)
 ```
-export DOCK="<אפליקציות, מופרדות ברווח>" VOICE=<on|off> PASSWORD="<סיסמה או ריק>"
+export DOCK="<אפליקציות, מופרדות ברווח>" VOICE=<on|off> START_APP=<package או home>
 ./fasttv.sh <ip> "<room>" backup      # חבילות, הגדרות, getprop → work/backups/<ip>/ + restore.sh
+./fasttv.sh <ip> "<room>" time        # שעון: זמן אוטומטי מ-time.google.com, נבדק מול השעון של המחשב
 ./fasttv.sh <ip> "<room>" anim        # window 0, transition 0, animator 0.5
 ./fasttv.sh <ip> "<room>" disable     # המלצות Google TV / leanback; ‏katniss (קול) רק אם VOICE=off
 ./fasttv.sh <ip> "<room>" apps        # אפליקציות שהמשתמש התקין ולא במסך → uninstall-options.json
@@ -71,7 +83,7 @@ export DOCK="<אפליקציות, מופרדות ברווח>" VOICE=<on|off> PAS
 ולחכות. אם התשובה `"skip"` → `set uninstall skip`; אחרת `./fasttv.sh <ip> "<room>" uninstall <החבילות המסומנות>`.
 ```
 ./fasttv.sh <ip> "<room>" launcher   # מסך הבית של cleanyourtv + ערכת N Vision עם DOCK; מסך הבית המקורי נכבה רק אחרי שהחדש אושר
-./fasttv.sh <ip> "<room>" airplay    # ‏N Vision AirPlay, נפתח פעם אחת (כדי שיעלה בהדלקה), שם חדר, סיסמה
+./fasttv.sh <ip> "<room>" airplay    # ‏N Vision AirPlay (מתקין או מעדכן), נפתח פעם אחת, שם חדר, קוד על המסך + הרשאת חלון
 ./fasttv.sh <ip> "<room>" cec        # מדפיס hdmi_control_*; נכשל אם HDMI-CEC כבוי
 ```
 אחר כך כרטיס `cec` (התפריטים בצד הטלוויזיה, כמו אפשרויות מסך פתיחה בסמסונג): לשאול ולחכות (`skip` זה בסדר).
@@ -80,8 +92,9 @@ export DOCK="<אפליקציות, מופרדות ברווח>" VOICE=<on|off> PAS
 ```
 
 ## 6. סיום: כרטיס `finish`
-ברירת המחדל היא **להשאיר את ADB פתוח**. רק אם הוא בחר `close`: ‏`./fasttv.sh <ip> "<room>" close`
-(מכבה ADB, ואז `tools/adb-closed.py` חייב להגיד שהפורט דוחה חיבור). אחרת `set close ok "ADB נשאר פתוח"`.
+הכרטיס שואל אם הכל עובד. `clean` (ברירת המחדל): ‏`./fasttv.sh <ip> "<room>" clean` מוחק את הגיבויים והקבצים
+הזמניים בטלוויזיה ובמחשב, ואז מכבה ADB; ‏`tools/adb-closed.py` חייב להגיד שהפורט דוחה חיבור.
+`open`: משאירים הכל כמו שהוא, ‏`set close ok "ADB נשאר פתוח"`.
 ואז סיכום קצר בצ'אט: דגם, מה כובה ומה הוסר, המסך, שם AirPlay, איפה הגיבוי ו-`restore.sh`.
 יש עוד טלוויזיות? מתחילים שוב משלב 2, טלוויזיה אחת בכל פעם.
 
@@ -102,6 +115,9 @@ export DOCK="<אפליקציות, מופרדות ברווח>" VOICE=<on|off> PAS
   (`dumpsys power | grep mWakefulness`). לבדוק `dumpsys activity activities | grep -i ResumedActivity`.
 - ה-shell לא יכול לכבות פעילות אחת (`pm disable pkg/Activity`); מסתירים אריחים עם `hidden_apps` בערכה.
 - AirPlay עובד רק כשהאייפון והטלוויזיה באותה רשת (ראוטר אחד, או ראוטר שני שמוגדר כנקודת גישה).
+- שעון לא נכון (ממיר שתקוע על תאריך ישן) שובר HTTPS: חנות Play, התחברות לגוגל ואפליקציות סטרימינג נכשלות. תמיד להריץ
+  `time`. אם הוא נכשל והממיר לא מצליח אפילו לעשות ping לראוטר (`Destination Host Unreachable`), אתחול או ניתוק וחיבור
+  של כבל הרשת מתקנים את זה; נראה בממיר פרטנר שבו ל-`eth0` ולגשר `ebr0` הייתה אותה כתובת IP.
 - עוד הערות על המכשיר: `docs/partner-tv-plus.md`.
 
 </div>

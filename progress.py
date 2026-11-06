@@ -22,11 +22,11 @@ DIR = os.path.join(KIT, "work", "progress")
 STATUS = os.path.join(DIR, "status.json")
 STEPS = {
     "he": [("wifi", "אותה רשת"), ("adb", "הפעלת ADB בטלוויזיה"), ("connect", "חיבור"), ("choices", "בחירות"),
-           ("backup", "גיבוי"), ("anim", "אנימציות מהירות"), ("disable", "כיבוי שירותים מיותרים"),
+           ("backup", "גיבוי"), ("time", "שעון מדויק"), ("anim", "אנימציות מהירות"), ("disable", "כיבוי שירותים מיותרים"),
            ("uninstall", "הסרת אפליקציות"), ("launcher", "מסך בית N Vision"), ("airplay", "N Vision AirPlay"),
            ("cec", "שלט אחד (HDMI-CEC)"), ("verify", "הפעלה מחדש ובדיקה"), ("close", "סיום")],
     "en": [("wifi", "Same network"), ("adb", "Turn on ADB on the TV"), ("connect", "Connect"), ("choices", "Choices"),
-           ("backup", "Backup"), ("anim", "Faster animations"), ("disable", "Turn off extras"),
+           ("backup", "Backup"), ("time", "Correct clock"), ("anim", "Faster animations"), ("disable", "Turn off extras"),
            ("uninstall", "Remove apps"), ("launcher", "N Vision home screen"), ("airplay", "N Vision AirPlay"),
            ("cec", "One remote (HDMI-CEC)"), ("verify", "Reboot and check"), ("close", "Finish")],
 }

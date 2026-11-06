@@ -9,18 +9,17 @@
   "columns": 5,
   "single_row": true,
   "dock_row": true,
-  "background_color": "#0B1620",
+  "background_color": "#1C1C1E",
   "wallpaper": true,
   "cinematic_home": true,
-  "dock_glass": true,
-  "dock_even_padding": true,
+  "dock_glass": false,
   "icon_only_buttons": true,
   "show_network_pill": false,
   "show_inputs_pill": false,
   "app_glow": false,
-  "glow_style": "off",
-  "focus_overshoot": false,
-  "advanced_effects": false,
+  "glow_style": "horizon",
+  "focus_overshoot": true,
+  "advanced_effects": true,
   "hidden_apps": [
     "com.android.tv.settings",
     "com.technicolor.android.remotecontrolservice",
@@ -29,10 +28,17 @@
     "me.efesser.flauncher",
     "ca.dstudio.atvlauncher.free"
   ],
-  "ambient_glow": false,
+  "ambient_glow": true,
   "top_bar_apps": [
     "io.github.jqssun.airplay"
   ],
-  "cinematic_scrim": 35,
-  "wallpaper_dim": 0
+  "cinematic_scrim": 25,
+  "wallpaper_dim": 0,
+  "cinematic_art": 90,
+  "cinematic_white_focus": true,
+  "cinematic_dots": true,
+  "dock_band": false,
+  "glass_style": "halo",
+  "header_white": true,
+  "show_greeting": true
 }

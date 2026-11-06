@@ -23,7 +23,7 @@ Set up my Android TV with N Vision Fast TV: clone https://github.com/Nil5959/nvi
 Nothing to install first: the assistant downloads this kit, and the home screen and AirPlay come ready-made from the releases.
 
 A progress page opens in your browser. It shows exactly what to press on the TV remote (turning on Developer options
-and USB debugging, pressing Allow), lets you pick your apps, room name and an optional AirPlay password, and shows
+and USB debugging, pressing Allow), lets you pick your apps, the room name and the app that opens at power-on, and shows
 each step with a screenshot from the TV. You never have to type in the chat.
 
 ## What it does
@@ -33,9 +33,10 @@ each step with a screenshot from the TV. You never have to type in the chat.
 3. Removes apps you don't use (you tick them on the page; reinstall any time from the Play Store).
 4. Installs the [cleanyourtv](https://github.com/Gathin23/cleanyourtv) home screen with the N Vision theme and your apps.
 5. Installs [N Vision AirPlay](https://github.com/Nil5959/nvision-airplay): named after the room, starts with the TV,
-   goes back to what you were watching when the iPhone disconnects, optional password, green/red status button.
+   shows a 4-digit code over the picture the first time an iPhone connects, goes back to what you were watching when it disconnects, green/red status button.
 6. Checks HDMI-CEC (one remote for TV and box), reboots, and verifies it all.
-7. Leaves ADB open by default so you can change things later; closing it is one tick on the last card.
+7. Knows what was already done on a TV (run it again any time: it only does what is missing).
+8. When you confirm everything works, deletes the backups and leftovers and closes ADB.
 
 Not for Samsung Tizen, LG webOS, Roku or Fire TV.
 

@@ -109,6 +109,30 @@
         ]
       },
       {
+        "key": "start_app",
+        "type": "radio",
+        "label": "Which app opens when the TV is switched on (and when the box wakes up)",
+        "options": [
+          {
+            "value": "il.co.partnertv.atv",
+            "label": "Partner TV+",
+            "checked": true
+          },
+          {
+            "value": "com.netflix.ninja",
+            "label": "Netflix"
+          },
+          {
+            "value": "com.google.android.youtube.tv",
+            "label": "YouTube"
+          },
+          {
+            "value": "home",
+            "label": "The home screen"
+          }
+        ]
+      },
+      {
         "key": "voice",
         "type": "radio",
         "label": "Voice search (the mic button on the remote)",
@@ -123,12 +147,6 @@
             "label": "Used, keep it"
           }
         ]
-      },
-      {
-        "key": "password",
-        "type": "text",
-        "label": "AirPlay password (optional)",
-        "placeholder": "No password"
       }
     ],
     "button": "Continue"
@@ -160,8 +178,8 @@
     "skip": "Skip"
   },
   "finish": {
-    "title": "Finish: leave ADB open?",
-    "lead": "Open ADB lets you change things later without the remote. Closed is safer on a network with guests.",
+    "title": "Is everything working?",
+    "lead": "Check the TV for a moment: the home screen, your apps and AirPlay from the iPhone. If all is good, everything is cleaned up: the backups and temporary files are deleted (on the TV and on this computer) and ADB is closed.",
     "fields": [
       {
         "key": "adb",
@@ -169,13 +187,13 @@
         "label": "ADB",
         "options": [
           {
-            "value": "open",
-            "label": "Leave it open",
+            "value": "clean",
+            "label": "All good: clean up and close (no backup left, no way back)",
             "checked": true
           },
           {
-            "value": "close",
-            "label": "Close it (you can turn it on again in Settings)"
+            "value": "open",
+            "label": "Leave it open with the backup (to change more)"
           }
         ]
       }
