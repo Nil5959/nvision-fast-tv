@@ -195,7 +195,8 @@ json.dump(c, open(sys.argv[2], "w"), indent=2, ensure_ascii=False)
 EOF
   (cd "$CYT" && tools/theme.sh "$th")
   sleep 3
-  if tv 'dumpsys activity activities' | grep -E 'mFocusedApp|ResumedActivity' | grep -q com.gathin.tvhome; then
+  # the default Home, not what is on screen: a sleeping TV shows no resumed activity
+  if tv 'cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME' | tail -n 1 | grep -q com.gathin.tvhome; then
     step launcher ok "מסך הבית החדש פעיל"; mark launcher
   else
     step launcher fail "Home לא עבר ל-com.gathin.tvhome"; return 1
