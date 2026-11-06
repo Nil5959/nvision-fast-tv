@@ -11,9 +11,9 @@
 עובד על Android TV / Google TV מגרסה 8.0 (נבדק על ממיר Partner TV+, ‏Technicolor S70PCI, אנדרואיד 9).
 לא מתאים לסמסונג Tizen, ‏LG webOS או Roku: אם יש לו כזה, תגיד לו ותעצור.
 **Fire TV (‏Fire OS)** מקבל הרצה חלקית: `time`, ‏`anim`, הסרת אפליקציות שלא בשימוש ו-N Vision AirPlay עובדים;
-מדלגים על `disable` ועל `launcher` (‏Fire OS שומר על מסך הבית שלו ודוחה את רוב ה-`pm disable-user`). בכרטיס `adb` מציגים
-את השלבים של Fire TV (`progress.py ask adb '{"steps":[...]}'`): הגדרות ← My Fire TV ← אודות ← ללחוץ OK על שם המכשיר
-7 פעמים ← אחורה ← אפשרויות למפתחים ← ADB debugging פועל (וגם "אפליקציות ממקורות לא ידועים" פועל, בשביל N Vision AirPlay).
+`disable` ו-`launcher` מדלגים לבד (‏Fire OS שומר על מסך הבית שלו ודוחה את רוב ה-`pm disable-user`). במקום הכרטיס `adb`
+משתמשים בכרטיס `adb_fire`, ואחרי `airplay` מציגים את הכרטיס `fire_privacy` (לא חובה: מתגי פרסומות ומעקב שקיימים רק
+בתפריטים של אמזון). ‏AirPlay ב-Fire TV עובד עם אותו קוד שקופץ על המסך.
 
 קרדיטים: מסך הבית והכלים מ-[cleanyourtv](https://github.com/Gathin23/cleanyourtv) (MIT), וכללי הבטיחות כאן
 לקוחים מה-`PROMPT.md` שלו. ‏AirPlay: ‏[Nil5959/nvision-airplay](https://github.com/Nil5959/nvision-airplay),

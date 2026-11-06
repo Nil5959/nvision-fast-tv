@@ -199,5 +199,28 @@
       }
     ],
     "button": "Finish"
+  },
+  "adb_fire": {
+    "title": "Turn on ADB on the Fire TV (once, with the remote)",
+    "lead": "This is the only step you do by hand. Everything after it is automatic.",
+    "steps": [
+      "On the remote: Settings ⚙️ → My Fire TV (or \"Device & Software\") → About.",
+      "Press OK on the device name (Fire TV Stick) 7 times, until it says you are already a developer.",
+      "Go back once → Developer options.",
+      "Turn on ADB debugging.",
+      "Turn on Apps from Unknown Sources (or Install unknown apps), for N Vision AirPlay."
+    ],
+    "button": "Done"
+  },
+  "fire_privacy": {
+    "title": "Fire TV: fewer ads and less tracking (optional)",
+    "lead": "Amazon only allows this from its menus, so it's on the remote:",
+    "steps": [
+      "Settings → Preferences → Privacy Settings: turn off Device Usage Data, Collect App Usage Data, Interest-based Ads.",
+      "Settings → Preferences → Data Monitoring: turn it off.",
+      "Settings → Preferences → Featured Content: turn off Allow Video Autoplay and Allow Audio Autoplay."
+    ],
+    "button": "Done",
+    "skip": "Skip"
   }
 }

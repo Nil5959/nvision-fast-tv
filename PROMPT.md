@@ -9,9 +9,9 @@ Answer in the language they wrote to you in (Hebrew → `he`, otherwise `en`).
 Works on Android TV / Google TV 8.0+ (tested: Partner TV+ box, Technicolor S70PCI, Android 9).
 Not for Samsung Tizen, LG webOS or Roku: if that's what they have, say so and stop.
 **Fire TV (Fire OS)** gets a partial run: `time`, `anim`, removing unused user apps and N Vision AirPlay all work;
-skip `disable` and `launcher` (Fire OS keeps its own Home and refuses most `pm disable-user`). Show the `adb` card
-with Fire TV steps instead (`progress.py ask adb '{"steps":[...]}'`): Settings → My Fire TV → About → press OK on the
-device name 7 times → back → Developer options → ADB debugging ON (and "Apps from unknown sources" ON for N Vision AirPlay).
+`disable` and `launcher` skip themselves (Fire OS keeps its own Home and refuses most `pm disable-user`). Use the card
+`adb_fire` instead of `adb` (its answer counts as `adb`), and after `airplay` show the optional card `fire_privacy`
+(ads/tracking switches that only exist in Amazon's menus). Fire TV's AirPlay uses the same on-screen code.
 
 Credits: home screen and tools from [cleanyourtv](https://github.com/Gathin23/cleanyourtv) (MIT), whose own
 `PROMPT.md` safety rules this follows. AirPlay: [Nil5959/nvision-airplay](https://github.com/Nil5959/nvision-airplay),

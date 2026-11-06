@@ -55,6 +55,7 @@ shot() {  # shot <name> [KEY...]: screenshot into the backup folder and onto the
   local f="$BK/shots/$1.png"; shift; mkdir -p "$BK/shots"
   if tv --screenshot "$f" "$@" >/dev/null 2>&1; then $PROG shot "$f" >/dev/null 2>&1 || true; echo "screenshot: $f"; fi
 }
+is_fire() { tv 'getprop ro.product.manufacturer' 2>/dev/null | tr -d '\r' | grep -qi amazon; }   # Fire TV: Fire OS keeps its own Home
 has() { tv "pm list packages $1" 2>/dev/null | tr -d '\r' | grep -qx "package:$1"; }
 wait_tv() {  # wait until ADB answers again, up to $1 seconds
   local end=$(( $(date +%s) + $1 ))
@@ -133,6 +134,7 @@ do_anim() {
 }
 
 do_disable() {
+  if is_fire; then step disable skip "Fire TV: אמזון לא מאפשרת לכבות את השירותים שלה"; return 0; fi
   step disable run
   local list="com.google.android.tvrecommendations com.google.android.leanbacklauncher.recommendations"
   [ "$VOICE" = off ] && list="$list com.google.android.katniss"
@@ -179,6 +181,7 @@ do_uninstall() {
 }
 
 do_launcher() {
+  if is_fire; then step launcher skip "Fire TV: אמזון נועלת את מסך הבית"; return 0; fi
   step launcher run "מתקין מסך בית"
   [ -f "$HOME_APK" ] || do_setup
   (cd "$CYT/launcher" && SKIP_BUILD=1 ./build-and-install.sh)   # ready-made APK: no JDK or Android SDK needed

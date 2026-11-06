@@ -199,5 +199,28 @@
       }
     ],
     "button": "סיים"
+  },
+  "adb_fire": {
+    "title": "להדליק ADB ב-Fire TV (פעם אחת, עם השלט)",
+    "lead": "זה הצעד היחיד שעושים בידיים. אחרי זה הכל קורה לבד.",
+    "steps": [
+      "בשלט: הגדרות ⚙️ ← My Fire TV (או \"מכשיר ותוכנה\") ← אודות (About).",
+      "ללחוץ OK על שם המכשיר (Fire TV Stick) 7 פעמים, עד שכתוב \"No need, you are already a developer\".",
+      "לחזור אחורה פעם אחת ← Developer options (אפשרויות למפתחים).",
+      "להדליק ADB debugging.",
+      "להדליק Apps from Unknown Sources (או Install unknown apps), בשביל N Vision AirPlay."
+    ],
+    "button": "עשיתי"
+  },
+  "fire_privacy": {
+    "title": "Fire TV: פחות פרסומות ומעקב (לא חובה)",
+    "lead": "את זה אמזון מאפשרת לשנות רק בתפריט, אז זה בשלט:",
+    "steps": [
+      "הגדרות ← Preferences (העדפות) ← Privacy Settings: לכבות Device Usage Data, ‏Collect App Usage Data, ‏Interest-based Ads.",
+      "הגדרות ← Preferences ← Data Monitoring: לכבות.",
+      "הגדרות ← Preferences ← Featured Content: לכבות Allow Video Autoplay ו-Allow Audio Autoplay."
+    ],
+    "button": "עשיתי",
+    "skip": "דלג"
   }
 }

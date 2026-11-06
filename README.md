@@ -40,6 +40,16 @@ each step with a screenshot from the TV. You never have to type in the chat.
 
 Fire TV: a partial run (speed, clean-up and N Vision AirPlay; Fire OS keeps its own home screen). Not for Samsung Tizen, LG webOS or Roku.
 
+## Just the AirPlay app, without a computer (Fire TV or any Android TV)
+
+1. On the TV, turn on installing from unknown apps (Fire TV: Settings → My Fire TV → Developer options → Apps from Unknown Sources; to see Developer options, press OK 7 times on the device name under About).
+2. Install the free **Downloader** app (by AFTVnews) from the TV's app store.
+3. In Downloader, type this address and install:
+   `github.com/Nil5959/nvision-airplay/releases/latest/download/nvision-airplay.apk`
+4. Open **N Vision AirPlay** once. From then on it starts with the TV; on the iPhone: Control Center → Screen Mirroring → the TV, and type the code that pops up.
+
+בעברית: מתקינים בטלוויזיה את Downloader, מקלידים את הכתובת למעלה, ופותחים את N Vision AirPlay פעם אחת.
+
 ## Files
 
 | | |
