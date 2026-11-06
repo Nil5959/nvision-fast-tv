@@ -9,7 +9,11 @@
 ענה בשפה שבה הוא כתב לך (עברית → `he`, אחרת `en`).
 
 עובד על Android TV / Google TV מגרסה 8.0 (נבדק על ממיר Partner TV+, ‏Technicolor S70PCI, אנדרואיד 9).
-לא מתאים לסמסונג Tizen, ‏LG webOS, ‏Roku או Fire TV: אם יש לו כזה, תגיד לו ותעצור.
+לא מתאים לסמסונג Tizen, ‏LG webOS או Roku: אם יש לו כזה, תגיד לו ותעצור.
+**Fire TV (‏Fire OS)** מקבל הרצה חלקית: `time`, ‏`anim`, הסרת אפליקציות שלא בשימוש ו-N Vision AirPlay עובדים;
+מדלגים על `disable` ועל `launcher` (‏Fire OS שומר על מסך הבית שלו ודוחה את רוב ה-`pm disable-user`). בכרטיס `adb` מציגים
+את השלבים של Fire TV (`progress.py ask adb '{"steps":[...]}'`): הגדרות ← My Fire TV ← אודות ← ללחוץ OK על שם המכשיר
+7 פעמים ← אחורה ← אפשרויות למפתחים ← ADB debugging פועל (וגם "אפליקציות ממקורות לא ידועים" פועל, בשביל N Vision AirPlay).
 
 קרדיטים: מסך הבית והכלים מ-[cleanyourtv](https://github.com/Gathin23/cleanyourtv) (MIT), וכללי הבטיחות כאן
 לקוחים מה-`PROMPT.md` שלו. ‏AirPlay: ‏[Nil5959/nvision-airplay](https://github.com/Nil5959/nvision-airplay),
@@ -51,7 +55,8 @@ python3 -I progress.py serve 8765     # ברקע, להשאיר רץ
   (הוא מחכה להודעת "Allow" בטלוויזיה). אחר כך `clear` ו-`set adb ok`.
 - במק, ה-`adb` הרגיל מחזיר "No route to host" ברשת הביתית (הרשאת Local Network). לא לנסות לתקן:
   כאן הכל עובד עם `tools/tv.py` של cleanyourtv (`TV_HOST=<ip>`).
-- אם זה לא אנדרואיד (אין ADB בכלל, או Tizen, ‏webOS, ‏Roku OS, ‏Fire OS): `set connect fail` עם הסבר, להגיד לו, ולעצור.
+- אם זה לא אנדרואיד (אין ADB בכלל, או Tizen, ‏webOS, ‏Roku OS): `set connect fail` עם הסבר, להגיד לו, ולעצור.
+  ‏Fire OS (‏`ro.build.version.name` מכיל "Fire OS", דגם `AFT*`): ממשיכים במצב החלקי של Fire TV שמתואר למעלה.
 
 ## 3ב. הוגדר כבר בעבר? `status` (תמיד, מיד אחרי החיבור)
 `./fasttv.sh <ip> "" status` קורא מהטלוויזיה עצמה (כל הרצה קודמת, מכל מחשב, משאירה את הגיבוי ואת `done.txt`

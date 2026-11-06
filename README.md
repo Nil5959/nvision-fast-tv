@@ -38,7 +38,7 @@ each step with a screenshot from the TV. You never have to type in the chat.
 7. Knows what was already done on a TV (run it again any time: it only does what is missing).
 8. When you confirm everything works, deletes the backups and leftovers and closes ADB.
 
-Not for Samsung Tizen, LG webOS, Roku or Fire TV.
+Fire TV: a partial run (speed, clean-up and N Vision AirPlay; Fire OS keeps its own home screen). Not for Samsung Tizen, LG webOS or Roku.
 
 ## Files
 

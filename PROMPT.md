@@ -7,7 +7,11 @@ everything they need to do or choose happens on the progress page, and you read 
 Answer in the language they wrote to you in (Hebrew → `he`, otherwise `en`).
 
 Works on Android TV / Google TV 8.0+ (tested: Partner TV+ box, Technicolor S70PCI, Android 9).
-Not for Samsung Tizen, LG webOS, Roku or Fire TV: if that's what they have, say so and stop.
+Not for Samsung Tizen, LG webOS or Roku: if that's what they have, say so and stop.
+**Fire TV (Fire OS)** gets a partial run: `time`, `anim`, removing unused user apps and N Vision AirPlay all work;
+skip `disable` and `launcher` (Fire OS keeps its own Home and refuses most `pm disable-user`). Show the `adb` card
+with Fire TV steps instead (`progress.py ask adb '{"steps":[...]}'`): Settings → My Fire TV → About → press OK on the
+device name 7 times → back → Developer options → ADB debugging ON (and "Apps from unknown sources" ON for N Vision AirPlay).
 
 Credits: home screen and tools from [cleanyourtv](https://github.com/Gathin23/cleanyourtv) (MIT), whose own
 `PROMPT.md` safety rules this follows. AirPlay: [Nil5959/nvision-airplay](https://github.com/Nil5959/nvision-airplay),
@@ -49,7 +53,8 @@ If nothing was found, ask `tv` with no options: they type the IP (TV: Settings �
   (it waits on the TV's "Allow" prompt). Then `clear`, `set adb ok`.
 - macOS: the stock `adb` binary gets "No route to host" on the LAN (Local Network privacy). Don't debug it:
   everything here uses cleanyourtv `tools/tv.py` (`TV_HOST=<ip>`).
-- If it isn't Android (no ADB at all, Tizen, webOS, Roku OS, Fire OS): set `connect fail` with that note, tell them, stop.
+- If it isn't Android (no ADB at all, Tizen, webOS, Roku OS): set `connect fail` with that note, tell them, stop.
+  Fire OS (`ro.build.version.name` has "Fire OS", model `AFT*`): continue in the partial Fire TV mode described at the top.
 
 ## 3b. Already set up before? — `status` (always, right after connecting)
 `./fasttv.sh <ip> "" status` reads the TV itself (any earlier run, from any computer, leaves its backup and a
