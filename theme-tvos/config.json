@@ -1,0 +1,34 @@
+{
+  "dock_apps": [
+    "il.co.partnertv.atv",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv",
+    "com.spotify.tv.android",
+    "com.android.vending"
+  ],
+  "columns": 5,
+  "single_row": true,
+  "dock_row": true,
+  "background_color": "#000000",
+  "wallpaper": true,
+  "cinematic_home": true,
+  "dock_glass": true,
+  "dock_even_padding": true,
+  "icon_only_buttons": true,
+  "show_network_pill": false,
+  "show_inputs_pill": false,
+  "app_glow": true,
+  "glow_style": "horizon",
+  "focus_overshoot": false,
+  "advanced_effects": false,
+  "hidden_apps": [
+    "com.android.tv.settings",
+    "com.technicolor.android.remotecontrolservice",
+    "com.marvell.tv.overscan",
+    "com.sharkfood.partner.tv.diagnostics",
+    "com.ionitech.airscreen",
+    "me.efesser.flauncher",
+    "ca.dstudio.atvlauncher.free"
+  ],
+  "live_tv_package": ""
+}

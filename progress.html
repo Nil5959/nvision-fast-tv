@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פסט טיווי ניל</title>
+<style>
+  :root { --bg:#0b0b0d; --card:#151518; --line:#26262b; --text:#f2f2f4; --dim:#8e8e96; --ok:#30d158; --run:#0a84ff; --fail:#ff453a; --skip:#636366; }
+  @media (prefers-color-scheme: light) { :root { --bg:#f5f5f7; --card:#fff; --line:#e3e3e8; --text:#1d1d1f; --dim:#6e6e73; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.5 -apple-system, "SF Pro Text", "Segoe UI", system-ui, sans-serif; }
+  main { max-width:1100px; margin:0 auto; padding:24px 16px 48px; display:grid; gap:20px; grid-template-columns:minmax(0,1fr); }
+  @media (min-width:860px) { main { grid-template-columns:minmax(0,5fr) minmax(0,6fr); } header { grid-column:1/-1; } }
+  header h1 { margin:0; font-size:28px; font-weight:700; letter-spacing:-.01em; }
+  header p { margin:4px 0 0; color:var(--dim); }
+  .bar { height:6px; background:var(--line); border-radius:3px; overflow:hidden; margin-top:14px; }
+  .bar i { display:block; height:100%; width:0; background:var(--ok); transition:width .4s; }
+  ol { list-style:none; margin:0; padding:0; background:var(--card); border:1px solid var(--line); border-radius:14px; }
+  li { display:flex; gap:12px; align-items:flex-start; padding:12px 16px; border-top:1px solid var(--line); }
+  li:first-child { border-top:0; }
+  .dot { flex:none; width:22px; height:22px; border-radius:50%; border:2px solid var(--skip); margin-top:1px; display:grid; place-items:center; font-size:13px; color:#fff; }
+  li.ok .dot { background:var(--ok); border-color:var(--ok); }
+  li.fail .dot { background:var(--fail); border-color:var(--fail); }
+  li.run .dot { border-color:var(--run); border-top-color:transparent; animation:spin 1s linear infinite; }
+  li.skip { opacity:.5; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { li.run .dot { animation:none; border-top-color:var(--run); } }
+  .t { font-weight:600; }
+  .n { color:var(--dim); font-size:14px; overflow-wrap:anywhere; }
+  li.fail .n { color:var(--fail); }
+  figure { margin:0; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; align-self:start; }
+  figure img { width:100%; border-radius:8px; display:block; background:#000; aspect-ratio:16/9; object-fit:contain; }
+  figcaption { color:var(--dim); font-size:14px; margin-top:8px; }
+  .empty { aspect-ratio:16/9; display:grid; place-items:center; color:var(--dim); background:var(--bg); border-radius:8px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1 id="title">פסט טיווי ניל</h1>
+    <p id="sub">מחכה להתחלה…</p>
+    <div class="bar"><i id="bar"></i></div>
+  </header>
+  <ol id="steps"></ol>
+  <figure>
+    <div id="shot" class="empty">צילום מסך יופיע כאן</div>
+    <figcaption id="cap">מה רואים עכשיו בטלוויזיה</figcaption>
+  </figure>
+</main>
+<script>
+const icons = { ok: "✓", fail: "!", run: "", pending: "", skip: "–" };
+let lastShot = null;
+function ago(t) { const s = Math.round(Date.now() / 1000 - t); return s < 60 ? `לפני ${s} שניות` : `לפני ${Math.round(s / 60)} דקות`; }
+async function tick() {
+  try {
+    const r = await fetch("status.json?" + Date.now(), { cache: "no-store" });
+    if (!r.ok) return;
+    const s = await r.json();
+    document.getElementById("title").textContent = `פסט טיווי ניל · ${s.room}`;
+    const done = s.steps.filter(x => x.state === "ok" || x.state === "skip").length;
+    const fail = s.steps.find(x => x.state === "fail");
+    const run = s.steps.find(x => x.state === "run");
+    document.getElementById("sub").textContent =
+      `${s.ip} · ${done} מתוך ${s.steps.length} · ` + (fail ? `נעצר: ${fail.title}` : run ? `עכשיו: ${run.title}` : done === s.steps.length ? "הכל מוכן" : "ממתין") + ` · עודכן ${ago(s.updated)}`;
+    document.getElementById("bar").style.width = (100 * done / s.steps.length) + "%";
+    const ol = document.getElementById("steps");
+    ol.replaceChildren(...s.steps.map(x => {
+      const li = document.createElement("li"); li.className = x.state;
+      li.innerHTML = `<span class="dot"></span><div><div class="t"></div><div class="n"></div></div>`;
+      li.querySelector(".dot").textContent = icons[x.state] || "";
+      li.querySelector(".t").textContent = x.title;
+      li.querySelector(".n").textContent = x.note || "";
+      return li;
+    }));
+    if (s.shot && s.shot !== lastShot) {
+      lastShot = s.shot;
+      const img = new Image(); img.alt = "צילום מסך מהטלוויזיה"; img.src = s.shot;
+      document.getElementById("shot").replaceWith(Object.assign(img, { id: "shot" }));
+      document.getElementById("cap").textContent = "צילום מסך אחרון מהטלוויזיה";
+    }
+  } catch (e) {}
+}
+tick(); setInterval(tick, 1500);
+</script>
+</body>
+</html>
