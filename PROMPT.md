@@ -122,4 +122,9 @@ Then a short summary in the chat: model, what was disabled / removed, dock, AirP
 - A wrong clock (a box stuck on an old date) breaks HTTPS: Play Store, Google sign-in and streaming apps fail. Always run
   `time`. If it fails and the box can't even ping its router (`Destination Host Unreachable`), a reboot or re-plugging
   the network cable fixes it; seen on a Partner box whose `eth0` and bridge `ebr0` both held the same IP.
+- N Vision AirPlay is in Hebrew by default, whatever the device language (Fire OS has no Hebrew). For English set
+  `app_language` to `system` or `en` with the SettingsReceiver broadcast (`--es key app_language --es value system`).
+- Web video from Safari plays on the TV when the site allows it; sites that block players outside the browser
+  (Cloudflare checks, signed links) show a note on the TV and play on the phone instead. For web video the AirPlay
+  button inside the player works best; then the phone can be locked.
 - More device notes: `docs/partner-tv-plus.md`.
