@@ -33,7 +33,8 @@ each step with a screenshot from the TV. You never have to type in the chat.
 3. Removes apps you don't use (you tick them on the page; reinstall any time from the Play Store).
 4. Installs the [cleanyourtv](https://github.com/Gathin23/cleanyourtv) home screen with the N Vision theme and your apps.
 5. Installs [N Vision AirPlay](https://github.com/Nil5959/nvision-airplay): named after the room, starts with the TV,
-   shows a 4-digit code over the picture the first time an iPhone connects, goes back to what you were watching when it disconnects, green/red status button.
+   shows a 4-digit code over the picture when an iPhone connects (first time only, or every time from Settings), goes back to what you were watching when it disconnects, green/red status button.
+   Starting AirPlay while the TV is off turns it on (HDMI-CEC); on a Samsung it turns it back off when the iPhone leaves.
 6. Checks HDMI-CEC (one remote for TV and box), reboots, and verifies it all.
 7. Knows what was already done on a TV (run it again any time: it only does what is missing).
 8. When you confirm everything works, deletes the backups and leftovers and closes ADB.
@@ -47,6 +48,7 @@ Fire TV: a partial run (speed, clean-up and N Vision AirPlay; Fire OS keeps its 
 3. In Downloader, type this address and install:
    `github.com/Nil5959/nvision-airplay/releases/latest/download/nvision-airplay.apk`
 4. Open **N Vision AirPlay** once. From then on it starts with the TV; on the iPhone: Control Center → Screen Mirroring → the TV, and type the code that pops up.
+5. Optional, so AirPlay can turn the TV on: Settings → Accessibility → turn on **N Vision AirPlay** (it only presses Home; it reads nothing).
 
 בעברית: מתקינים בטלוויזיה את Downloader, מקלידים את הכתובת למעלה, ופותחים את N Vision AirPlay פעם אחת.
 

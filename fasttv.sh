@@ -32,7 +32,7 @@ PY="$CYT/tools/venv/bin/python"
 PROG="python3 -I $KIT/progress.py"
 AIRPLAY_APK="$WORK/nvision-airplay.apk"
 AIRPLAY_URL="https://github.com/Nil5959/nvision-airplay/releases/latest/download/nvision-airplay.apk"
-AIRPLAY_VERSION="0.0.36-nv9"   # the release fasttv.sh installs; an older one on the TV counts as "update"
+AIRPLAY_VERSION="0.0.36-nv10"   # the release fasttv.sh installs; an older one on the TV counts as "update"
 HOME_APK="$CYT/launcher/app/build/outputs/apk/release/app-release.apk"   # ready-made, from this kit's release
 HOME_URL="https://github.com/Nil5959/nvision-fast-tv/releases/latest/download/nvision-home.apk"
 DEFAULT_DOCK="il.co.partnertv.atv com.netflix.ninja com.google.android.youtube.tv com.spotify.tv.android com.android.vending"
@@ -223,6 +223,13 @@ do_airplay() {
   tv "am broadcast -n io.github.jqssun.airplay/.SettingsReceiver -a io.github.jqssun.airplay.SET_SETTING --es key server_name --es value '$rq'"
   tv "am broadcast -n io.github.jqssun.airplay/.SettingsReceiver -a io.github.jqssun.airplay.SET_SETTING --es key boot_auto_start --es value true" >/dev/null
   tv 'appops set io.github.jqssun.airplay SYSTEM_ALERT_WINDOW allow' >/dev/null   # the code pops up over what is playing
+  # accessibility service: turns the TV on when AirPlay starts while the box sleeps (it presses Home,
+  # which is what makes Fire OS send the HDMI-CEC "turn on") and lets Back close the code. Reads nothing.
+  # Off, then on again, so an updated app's abilities take effect; other enabled services are kept.
+  tv 'svc=io.github.jqssun.airplay/io.github.jqssun.airplay.service.TvWakeAccessibility;
+    other=$(settings get secure enabled_accessibility_services | tr ":" "\n" | grep -v -e TvWakeAccessibility -e "^null$" | grep . | tr "\n" ":");
+    settings put secure enabled_accessibility_services "$other"; sleep 1;
+    settings put secure enabled_accessibility_services "$other$svc"; settings put secure accessibility_enabled 1' >/dev/null
   tv "am broadcast -n io.github.jqssun.airplay/.SettingsReceiver -a io.github.jqssun.airplay.SET_SETTING --es key airplay_password --es value ''" >/dev/null
   tv "am broadcast -n io.github.jqssun.airplay/.SettingsReceiver -a io.github.jqssun.airplay.SET_SETTING --es key require_pin --es value true" >/dev/null
   shot 07-airplay
@@ -281,6 +288,7 @@ do_status() {   # what is already true on the TV, whoever did it; JSON on stdout
     echo ap=$(dumpsys package io.github.jqssun.airplay | grep -m1 versionName | cut -d= -f2);
     echo apsig=$(dumpsys package io.github.jqssun.airplay | grep -m1 "signatures:" | tr -d " ");
     echo overlay=$(appops get io.github.jqssun.airplay SYSTEM_ALERT_WINDOW | grep -o allow);
+    echo a11y=$(settings get secure enabled_accessibility_services | grep -o TvWakeAccessibility);
     echo backup=$(ls '"$ONTV"'/backup/packages_all.txt 2>/dev/null);
     echo done=$(cat '"$ONTV"'/done.txt 2>/dev/null | tr "\n" ",");
     echo disabled=$(pm list packages -d | cut -d: -f2 | tr "\n" ",");
@@ -303,7 +311,7 @@ st = {
   "disable": "com.google.android.tvrecommendations" in dis or "com.google.android.leanbacklauncher.recommendations" in dis,
   "uninstall": not extra,
   "launcher": kv.get("home", "").startswith("com.gathin.tvhome") and bool(kv.get("theme")),
-  "airplay": kv.get("ap") == os.environ["APV"] and kv.get("overlay") == "allow",
+  "airplay": kv.get("ap") == os.environ["APV"] and kv.get("overlay") == "allow" and kv.get("a11y") == "TvWakeAccessibility",
 }
 print(json.dumps({"done": st, "airplay_version": kv.get("ap", ""), "voice_off": "com.google.android.katniss" in dis,
                   "room": os.environ["ROOM_NOW"], "dock": os.environ["DOCK_NOW"].split(), "apps_left": extra,
