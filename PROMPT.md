@@ -51,6 +51,7 @@ If nothing was found, ask `tv` with no options: they type the IP (TV: Settings â
   Still closed after 2 minutes: show `adb` again.
 - When the port is open: `ask allow`, and run `./fasttv.sh <ip> "" connect` in a loop until it connects
   (it waits on the TV's "Allow" prompt). Then `clear`, `set adb ok`.
+  No prompt on the TV? It may already trust this computer: check `connect`'s exit code (0 = connected), not the screen.
 - macOS: the stock `adb` binary gets "No route to host" on the LAN (Local Network privacy). Don't debug it:
   everything here uses cleanyourtv `tools/tv.py` (`TV_HOST=<ip>`).
 - If it isn't Android (no ADB at all, Tizen, webOS, Roku OS): set `connect fail` with that note, tell them, stop.

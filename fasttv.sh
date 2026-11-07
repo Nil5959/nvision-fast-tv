@@ -219,7 +219,8 @@ do_airplay() {
   tv 'rm -f /data/local/tmp/airplay.apk' >/dev/null
   tv 'am start -n io.github.jqssun.airplay/.MainActivity' >/dev/null   # once, so it leaves the stopped state and starts at boot
   sleep 6
-  tv "am broadcast -n io.github.jqssun.airplay/.SettingsReceiver -a io.github.jqssun.airplay.SET_SETTING --es key server_name --es value '$ROOM'"
+  local rq=${ROOM//\'/\'\\\'\'}   # a ' in the name (Nil's TV) becomes '\'' for the TV's shell
+  tv "am broadcast -n io.github.jqssun.airplay/.SettingsReceiver -a io.github.jqssun.airplay.SET_SETTING --es key server_name --es value '$rq'"
   tv "am broadcast -n io.github.jqssun.airplay/.SettingsReceiver -a io.github.jqssun.airplay.SET_SETTING --es key boot_auto_start --es value true" >/dev/null
   tv 'appops set io.github.jqssun.airplay SYSTEM_ALERT_WINDOW allow' >/dev/null   # the code pops up over what is playing
   tv "am broadcast -n io.github.jqssun.airplay/.SettingsReceiver -a io.github.jqssun.airplay.SET_SETTING --es key airplay_password --es value ''" >/dev/null
@@ -262,7 +263,7 @@ do_verify() {
   sleep 20
   wait_tv 240 || { step verify fail "הטלוויזיה לא חזרה אחרי אתחול"; return 1; }
   local bad=""
-  tv 'dumpsys activity activities' | grep -E 'mFocusedApp|ResumedActivity' | grep -q com.gathin.tvhome || bad="$bad Home"
+  tv 'dumpsys activity activities' | grep -E 'mFocusedApp|ResumedActivity' | grep -q com.gathin.tvhome || is_fire || bad="$bad Home"   # Fire TV keeps Amazon's Home
   local dis; dis="$(tv 'pm list packages -d' | tr -d '\r')"
   while read -r p; do [ -z "$p" ] || echo "$dis" | grep -qx "package:$p" || bad="$bad $p-enabled"; done < "$BK/kit-disabled.txt"
   local end=$(( $(date +%s) + 240 )) ap=no
@@ -285,7 +286,7 @@ do_status() {   # what is already true on the TV, whoever did it; JSON on stdout
     echo disabled=$(pm list packages -d | cut -d: -f2 | tr "\n" ",");
     echo third=$(pm list packages -3 | cut -d: -f2 | tr "\n" ",")' 2>/dev/null | tr -d '\r')"
   local settings room=""; settings="$(tv 'am broadcast -n io.github.jqssun.airplay/.SettingsReceiver -a io.github.jqssun.airplay.LIST_SETTINGS' 2>/dev/null)"
-  room="$(echo "$settings" | grep -o '"server_name":{"value":"[^"]*"' | sed 's/.*"value":"//;s/"$//')"
+  room="$(echo "$settings" | grep -o '"server_name":{"value":"[^"]*"' | sed 's/.*"value":"//;s/"$//' || true)"   # no AirPlay yet: empty, not a crash
   local dock; dock="$(tv 'cat /sdcard/Android/data/com.gathin.tvhome/files/config.json' 2>/dev/null | python3 -I -c 'import json,sys
 try: print(" ".join(json.load(sys.stdin).get("dock_apps",[])))
 except Exception: print("")')"
