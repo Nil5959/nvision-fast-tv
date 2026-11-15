@@ -90,6 +90,7 @@ wait. Answer `"skip"` → `set uninstall skip`; else `./fasttv.sh <ip> "<room>" 
 ./fasttv.sh <ip> "<room>" launcher   # cleanyourtv home + N Vision theme with DOCK; stock launcher off only after Home is confirmed
 ./fasttv.sh <ip> "<room>" airplay    # N Vision AirPlay (installs or updates), opened once, room name, on-screen code + overlay permission
 ./fasttv.sh <ip> "<room>" cec        # turns on CEC, auto-wakeup (box wakes with the TV) and auto-off; prints hdmi_control_*
+./fasttv.sh <ip> "<room>" tvwake [tv_ip]  # only if the box stays asleep when the TV is turned on with the TV remote (Samsung Q7 2017): AirPlay wakes the box when the TV returns to the network, finds the TV again if its IP changes, and opens the start app fresh on every wake
 ```
 Then card `cec` (the TV-side menus, Samsung Start Screen Options etc.): ask, wait (`skip` is fine).
 ```

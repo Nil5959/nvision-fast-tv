@@ -32,7 +32,7 @@ PY="$CYT/tools/venv/bin/python"
 PROG="python3 -I $KIT/progress.py"
 AIRPLAY_APK="$WORK/nvision-airplay.apk"
 AIRPLAY_URL="https://github.com/Nil5959/nvision-airplay/releases/latest/download/nvision-airplay.apk"
-AIRPLAY_VERSION="0.0.36-nv10"   # the release fasttv.sh installs; an older one on the TV counts as "update"
+AIRPLAY_VERSION="0.0.36-nv11"   # the release fasttv.sh installs; an older one on the TV counts as "update"
 HOME_APK="$CYT/launcher/app/build/outputs/apk/release/app-release.apk"   # ready-made, from this kit's release
 HOME_URL="https://github.com/Nil5959/nvision-fast-tv/releases/latest/download/nvision-home.apk"
 DEFAULT_DOCK="il.co.partnertv.atv com.netflix.ninja com.google.android.youtube.tv com.spotify.tv.android com.android.vending"
@@ -345,9 +345,40 @@ do_close() {
   step close fail "פורט 5555 עדיין פתוח: לכבות USB debugging בטלוויזיה"; return 1
 }
 
+do_tvwake() {   # TVs that never send a CEC wake (Samsung Q7 2017): AirPlay wakes the box when the TV comes back
+  step tvwake run "מגדיר השכמה לפי הטלוויזיה"
+  local tvip="${TV_IP:-${4:-}}"
+  if [ -z "$tvip" ]; then   # the box's TV is on now: take the one Samsung that answers
+    tvip="$("$PY" -I - <<'PY'
+import json, socket, concurrent.futures as cf, urllib.request
+me = socket.socket(socket.AF_INET, socket.SOCK_DGRAM); me.connect(("8.8.8.8", 80)); pre = me.getsockname()[0].rsplit(".", 1)[0]
+def tv(i):
+    ip = f"{pre}.{i}"
+    try:
+        socket.create_connection((ip, 8001), 0.5).close()
+        d = json.load(urllib.request.urlopen(f"http://{ip}:8001/api/v2/", timeout=3)).get("device", {})
+        return ip if "Samsung" in d.get("type", "") else None
+    except Exception: return None
+with cf.ThreadPoolExecutor(64) as ex: found = [x for x in ex.map(tv, range(1, 255)) if x]
+print(found[0] if len(found) == 1 else "")
+PY
+)"
+  fi
+  [ -n "$tvip" ] || { step tvwake fail "לא זוהתה טלוויזיה אחת: להריץ עם TV_IP=<ip>"; return 1; }
+  local app; app="$(tv 'cat /sdcard/Android/data/com.gathin.tvhome/files/config.json' 2>/dev/null | python3 -I -c 'import json,sys
+try: print(json.load(sys.stdin).get("live_tv_package",""))
+except Exception: print("")')"
+  local S="am broadcast -n io.github.jqssun.airplay/.SettingsReceiver -a io.github.jqssun.airplay.SET_SETTING"
+  tv "$S --es key tv_ip --es value $tvip; $S --es key tv_mac --es value ''; $S --es key tv_wake_app --es value '$app'" >/dev/null
+  # AirPlay opens the app fresh on every wake (resumed after sleep it can be gray): the launcher must not too
+  tv 'C=/sdcard/Android/data/com.gathin.tvhome/files/config.json; [ -f $C ] && sed -i "s/\"open_on_start_on_wake\": true/\"open_on_start_on_wake\": false/" $C; am force-stop com.gathin.tvhome' >/dev/null
+  step tvwake ok "טלוויזיה $tvip, פותח ${app:-כלום} בהשכמה"; mark tvwake
+}
+
 case "$STEP" in
   setup) do_setup ;;
   connect|backup|anim|disable|apps|launcher|airplay|cec|time|verify|close|clean|sleep|status) "do_$STEP" ;;
+  tvwake) do_tvwake "$@" ;;
   uninstall) do_uninstall "$@" ;;
   auto) for s in connect backup time anim disable launcher airplay cec verify; do "do_$s"; done ;;
   *) echo "unknown step: $STEP" >&2; exit 2 ;;
