@@ -89,7 +89,7 @@ wait. Answer `"skip"` → `set uninstall skip`; else `./fasttv.sh <ip> "<room>" 
 ```
 ./fasttv.sh <ip> "<room>" launcher   # cleanyourtv home + N Vision theme with DOCK; stock launcher off only after Home is confirmed
 ./fasttv.sh <ip> "<room>" airplay    # N Vision AirPlay (installs or updates), opened once, room name, on-screen code + overlay permission
-./fasttv.sh <ip> "<room>" cec        # prints hdmi_control_*; fails if HDMI-CEC is off
+./fasttv.sh <ip> "<room>" cec        # turns on CEC, auto-wakeup (box wakes with the TV) and auto-off; prints hdmi_control_*
 ```
 Then card `cec` (the TV-side menus, Samsung Start Screen Options etc.): ask, wait (`skip` is fine).
 ```

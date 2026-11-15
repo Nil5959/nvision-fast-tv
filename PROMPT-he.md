@@ -90,7 +90,7 @@ export DOCK="<אפליקציות, מופרדות ברווח>" VOICE=<on|off> STA
 ```
 ./fasttv.sh <ip> "<room>" launcher   # מסך הבית של cleanyourtv + ערכת N Vision עם DOCK; מסך הבית המקורי נכבה רק אחרי שהחדש אושר
 ./fasttv.sh <ip> "<room>" airplay    # ‏N Vision AirPlay (מתקין או מעדכן), נפתח פעם אחת, שם חדר, קוד על המסך + הרשאת חלון
-./fasttv.sh <ip> "<room>" cec        # מדפיס hdmi_control_*; נכשל אם HDMI-CEC כבוי
+./fasttv.sh <ip> "<room>" cec        # מדליק CEC, התעוררות אוטומטית (הממיר קם עם הטלוויזיה) וכיבוי משותף; מדפיס hdmi_control_*
 ```
 אחר כך כרטיס `cec` (התפריטים בצד הטלוויזיה, כמו אפשרויות מסך פתיחה בסמסונג): לשאול ולחכות (`skip` זה בסדר).
 ```

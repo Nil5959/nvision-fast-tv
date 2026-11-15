@@ -258,6 +258,10 @@ do_time() {   # a wrong clock breaks HTTPS: Play Store, Google sign-in and some 
 
 do_cec() {
   step cec run
+  # one remote for both: CEC on, the box wakes when the TV turns on, and sleeps with it.
+  # Some boxes ship with auto-wakeup 0: turning the TV on left the box asleep.
+  tv 'settings put global hdmi_control_enabled 1; settings put global hdmi_control_auto_wakeup_enabled 1;
+    settings put global hdmi_control_auto_device_off_enabled 1' >/dev/null
   local s; s="$(tv 'settings list global' | grep -i hdmi_control || true)"
   echo "${s:-no hdmi_control_* settings (defaults apply)}"
   if echo "$s" | grep -q 'hdmi_control_enabled=0'; then step cec fail "HDMI-CEC כבוי בהגדרות"; else step cec ok "$(echo "$s" | tr '\n' ' ' | cut -c1-80)"; fi
@@ -276,6 +280,7 @@ do_verify() {
   local end=$(( $(date +%s) + 240 )) ap=no
   while [ "$(date +%s)" -lt "$end" ]; do if port_open 7000; then ap=yes; break; fi; sleep 10; done
   [ "$ap" = yes ] || bad="$bad AirPlay"
+  tv 'settings get global hdmi_control_auto_wakeup_enabled' | tr -d '\r' | grep -qx 1 || bad="$bad CEC-wakeup"
   shot 09-after-reboot
   if [ -n "$bad" ]; then step verify fail "בעיה:$bad"; return 1; fi
   step verify ok "Home, AirPlay וחבילות כבויות - הכל תקין"
