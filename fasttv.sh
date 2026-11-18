@@ -148,6 +148,7 @@ do_disable() {
   local missing=""
   for p in $done_; do tv 'pm list packages -d' | grep -qx "package:$p" || missing="$missing $p"; done
   if [ -n "$missing" ]; then step disable fail "לא כובו:$missing"; return 1; fi
+  fix_dream   # a disabled package may have been the screensaver
   step disable ok "$(echo $done_ | wc -w | tr -d ' ') כובו"; mark disable
   shot 03-disable HOME
 }
@@ -180,6 +181,15 @@ do_uninstall() {
   step uninstall ok "$ok הוסרו"
 }
 
+# the screensaver must resolve: a dream from a disabled package (debloated Backdrop) fails to bind, the box
+# then goes to sleep on the screen timeout and CEC standby turns the TV off mid-music. Fall back to ClockDream.
+fix_dream() {
+  tv 'd=$(settings get secure screensaver_components | cut -d, -f1); p=${d%%/*};
+    if [ -z "$p" ] || [ "$p" = null ] || ! pm list packages -e | grep -qx "package:$p"; then
+      pm list packages -e | grep -qx package:com.gathin.tvhome && settings put secure screensaver_components com.gathin.tvhome/.ClockDream && echo "dream $d -> ClockDream"
+    fi' 2>/dev/null
+}
+
 do_launcher() {
   if is_fire; then step launcher skip "Fire TV: אמזון נועלת את מסך הבית"; return 0; fi
   step launcher run "מתקין מסך בית"
@@ -200,6 +210,7 @@ EOF
   sleep 3
   # the default Home, not what is on screen: a sleeping TV shows no resumed activity
   if tv 'cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME' | tail -n 1 | grep -q com.gathin.tvhome; then
+    fix_dream
     step launcher ok "מסך הבית החדש פעיל"; mark launcher
   else
     step launcher fail "Home לא עבר ל-com.gathin.tvhome"; return 1
@@ -281,6 +292,7 @@ do_verify() {
   while [ "$(date +%s)" -lt "$end" ]; do if port_open 7000; then ap=yes; break; fi; sleep 10; done
   [ "$ap" = yes ] || bad="$bad AirPlay"
   tv 'settings get global hdmi_control_auto_wakeup_enabled' | tr -d '\r' | grep -qx 1 || bad="$bad CEC-wakeup"
+  [ -z "$(fix_dream)" ] || bad="$bad screensaver"   # it fixes it too: run verify again
   shot 09-after-reboot
   if [ -n "$bad" ]; then step verify fail "בעיה:$bad"; return 1; fi
   step verify ok "Home, AirPlay וחבילות כבויות - הכל תקין"
